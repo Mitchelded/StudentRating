@@ -21,6 +21,7 @@ using MySql.Data.MySqlClient;
 using Google.Protobuf.WellKnownTypes;
 using System.Windows.Controls.Primitives;
 using System.IO;
+using StudentRating;
 
 namespace RUN
 {
@@ -39,10 +40,10 @@ namespace RUN
         public String Name { get; set; }
 
         public String Patronymic { get; set; }
-        public int Score { get; set; }
+        
         public String Object { get; set; }
 
-
+        public int Score { get; set; }
 
 
         public Record(int Id, String Surname, String Name, String Patronymic, String Object, int Score)
@@ -55,8 +56,9 @@ namespace RUN
             this.Name = Name;
 
             this.Patronymic = Patronymic;
-            this.Score = Score;
             this.Object = Object;
+            this.Score = Score;
+            
         }
     }
 
@@ -74,20 +76,10 @@ namespace RUN
 
         DataRow dr;
 
-        //String  ConnStr = "Server=sql7.freemysqlhosting.net;" +
-        //                  "Port=3306;" +
-        //                  "DataBase=sql7611480;" +
-        //                  "UId=sql7611480;" +
-        //                  "PassWord=i9tZyP4N83;";
 
-        String ConnStr = "Server=localhost;" +
-                          "Port=3306;" +
-                          "DataBase=StudentRating;" +
-                          "UId=root;" +
-                          "PassWord=K1aqv#YZ7#hjsKSd~J{8XAZLRBIl5hEcCf9iMGTq56z0feH926fT$vPligGeIXNvUKbx1ZsR7nr*wr%f7hdaqkZ*7Mp?Hbuj%qE;";
+        string ConnStr;
 
-
-        String SelectText = "Select * From StudentRating";
+        String SelectText = "Select * From StudentRating Order By id";
 
         String SelectObjectText = "Select * From StudentRating " +
             "Where Object = ?";
@@ -116,11 +108,62 @@ namespace RUN
         public MainWindow()
         {
             InitializeComponent();
+            radioonline.IsChecked = true;
 
         }
 
         /*================================================================================*/
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radiolocal.IsChecked == true)
+            {
+                // Устанавливаем значение String ConnStr для первого RadioButton
+                ConnStr = "Server=localhost;" +
+                         "Port=3306;" +
+                         "DataBase=StudentRating;" +
+                         "UId=root;" +
+                         "PassWord=K1aqv#YZ7#hjsKSd~J{8XAZLRBIl5hEcCf9iMGTq56z0feH926fT$vPligGeIXNvUKbx1ZsR7nr*wr%f7hdaqkZ*7Mp?Hbuj%qE;";
+                radioonline.IsChecked = false;
+                radioMelnichenko.IsChecked = false;
+                Refresh();
+            }
+        }
 
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioonline.IsChecked==true)
+            {
+                // Устанавливаем значение String ConnStr для второго RadioButton
+                ConnStr = "Server=sql7.freemysqlhosting.net;" +
+                          "Port=3306;" +
+                          "DataBase=sql7611480;" +
+                          "UId=sql7611480;" +
+                          "PassWord=i9tZyP4N83;";
+
+                // Сбрасываем состояние первого RadioButton
+                radiolocal.IsChecked = false;
+                radioMelnichenko.IsChecked = false;
+                Refresh();
+            }
+        }
+
+        private void radioButton3_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            if (radioMelnichenko.IsChecked == true)
+            {
+                // Устанавливаем значение String ConnStr для второго RadioButton
+                ConnStr = "Server=localhost;" +
+                          "Port=3306;" +
+                          "DataBase=StudentRating;" +
+                          "UId=sql7611480;" +
+                          "PassWord=3;";
+
+                // Сбрасываем состояние первого RadioButton
+                radiolocal.IsChecked = false;
+                radioonline.IsChecked = false;
+                Refresh();
+            }
+        }
 
 
         /*================================================================================*/
@@ -128,6 +171,7 @@ namespace RUN
         private void miSelect_Click(object sender, RoutedEventArgs e)
 
         {
+            
             Refresh();
         }
 
@@ -203,7 +247,7 @@ namespace RUN
         {
             try
             {
-
+                
                 conn = new MySqlConnection(ConnStr);
                 conn.Open();
                 string truncateQuery = $"TRUNCATE TABLE StudentRating";
@@ -365,8 +409,8 @@ namespace RUN
             cmd.CommandText = InsertText;
 
             cmd.Parameters.Add("@Id", MySqlDbType.Int32, 4, "Id");
-            cmd.Parameters.Add("@Surname", MySqlDbType.VarChar, 45, "Surname");
             cmd.Parameters.Add("@Name", MySqlDbType.VarChar, 45, "Name");
+            cmd.Parameters.Add("@Surname", MySqlDbType.VarChar, 45, "Surname");  
             cmd.Parameters.Add("@Patronymic", MySqlDbType.VarChar, 45, "Patronymic");
             cmd.Parameters.Add("@Object", MySqlDbType.VarChar, 45, "Object");
             cmd.Parameters.Add("@Score", MySqlDbType.Int32, 4, "Score");
@@ -448,6 +492,30 @@ namespace RUN
 
             adapter.Update(dt);
         }
+
+
+        void Easter()
+        {
+            Window1 Easter1 = new Window1();
+            Window2 Easter2 = new Window2();
+            if (EName.Text == "Steve" && ESurname.Text == "Harvey")
+            {
+                Easter1.Show();
+            }
+            else if (EName.Text == "Walter" && ESurname.Text == "White")
+            {
+                Easter2.Show();
+            }
+        }
+
+        private void EasterButton_Click(object sender, RoutedEventArgs e)
+        {
+            Easter();
+
+        }
+
+
+
 
         /*================================================================================*/
 

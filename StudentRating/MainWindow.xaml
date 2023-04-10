@@ -11,7 +11,7 @@
             <RowDefinition/>
             <RowDefinition Height="0*"/>
         </Grid.RowDefinitions>
-        <Menu Name="mm" HorizontalAlignment="Center" Height="17" VerticalAlignment="Top" Width="800">
+        <Menu Name="mm" VerticalAlignment="Top" Width="800">
             <MenuItem Name="miBase" Header="Base">
                 <MenuItem Name="miSelect" Header="Select" Click="miSelect_Click">
                     <MenuItem Name="miInsertAll" Header="InsertAll" Click="miSelect_Click"/>
@@ -25,25 +25,40 @@
         </Menu>
         <DataGrid Name="dg" HorizontalAlignment="Left" Height="379" VerticalAlignment="Top" Width="514" Margin="255,25,0,0" MouseLeftButtonUp="dg_MouseLeftButtonUp"/>
 
-        <TextBox Name="EId" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,36,0,0"/>
-        <TextBox Name="ESurname" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="115,72,0,0"/>
-        <TextBox Name="EName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="115,110,0,0"/>
-        <TextBox Name="EPatronymic" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,151,0,0"/>
-        <TextBox x:Name="EScore" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="113,250,0,0"/>
-        <TextBox x:Name="EObject" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="113,203,0,0"/>
+        <TextBox Name="EId" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,50,0,0"/>
+        <Label Content="Id" HorizontalAlignment="Left" Margin="99,50,0,0" VerticalAlignment="Top" Height="26" Width="20"/>
+
+        <TextBox Name="ESurname" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,90,0,0"/>
+        <Label Content="Surname" HorizontalAlignment="Left" Margin="60,90,0,0" VerticalAlignment="Top" Height="26" Width="57"/>
+
+        <TextBox Name="EName" HorizontalAlignment="Left" Height="22" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,130,0,0"/>
+        <Label Content="Name" HorizontalAlignment="Left" Margin="77,130,0,0" VerticalAlignment="Top" Height="26" Width="42"/>
+
+        <TextBox Name="EPatronymic" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,170,0,0"/>
+        <Label Content="Patronymic" HorizontalAlignment="Left" Margin="50,170,0,0" VerticalAlignment="Top" Height="26" Width="69"/>
+
+        <TextBox x:Name="EScore" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,250,0,0"/>
+        <Label Content="Score" HorizontalAlignment="Left" Margin="80,250,0,0" VerticalAlignment="Top" Height="26" Width="39"/>
+
+        <TextBox x:Name="EObject" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,210,0,0"/>
+        <Label Content="Object" HorizontalAlignment="Left" Margin="75,210,0,0" VerticalAlignment="Top" Height="26" Width="45"/>
+        
         <TextBox x:Name="TxtFilePath" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" Text="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/test2.txt" VerticalAlignment="Top" Width="198" Margin="12,302,0,0"/>
 
 
-        <Label Content="Id" HorizontalAlignment="Left" Margin="96,33,0,0" VerticalAlignment="Top" Height="26" Width="20"/>
-        <Label Content="Name" HorizontalAlignment="Left" Margin="75,72,0,0" VerticalAlignment="Top" Height="26" Width="42"/>
-        <Label Content="Surname" HorizontalAlignment="Left" Margin="60,109,0,0" VerticalAlignment="Top" Height="26" Width="57"/>
-        <Label Content="Patronymic" HorizontalAlignment="Left" Margin="48,150,0,0" VerticalAlignment="Top" Height="26" Width="69"/>
-        <Label Content="Score" HorizontalAlignment="Left" Margin="69,249,0,0" VerticalAlignment="Top" Height="26" Width="39"/>
-        <Label Content="Object" HorizontalAlignment="Left" Margin="69,202,0,0" VerticalAlignment="Top" Height="26" Width="45"/>
+        
+        
+        
         <Button Content="Import" HorizontalAlignment="Left" Margin="210,302,0,0" VerticalAlignment="Top" Click="BtnImport_Click" Height="32" Width="40"/>
         <TextBox x:Name="TxtFilePath_Copy" HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/test2.txt" VerticalAlignment="Top" Width="198" Margin="12,371,0,0"/>
         <Button HorizontalAlignment="Left" Margin="210,371,0,0" VerticalAlignment="Top" Click="BtnExport_Click" Content="Export" Height="33" Width="38"/>
+        <RadioButton x:Name="radiolocal" Content="LocalHostBD" HorizontalAlignment="Left" Margin="21,447,0,0" VerticalAlignment="Top" Checked="radioButton1_CheckedChanged"/>
+        <RadioButton x:Name="radioonline" Content="OnlineBD" HorizontalAlignment="Left" Margin="115,447,0,0" VerticalAlignment="Top" Checked="radioButton2_CheckedChanged"/>
+        <RadioButton x:Name="radioMelnichenko" Content="MelnichenkoBD" HorizontalAlignment="Left" Margin="210,447,0,0" VerticalAlignment="Top" Checked="radioButton2_CheckedChanged"/>
+        <Button Content="Funny" HorizontalAlignment="Left" Margin="492,423,0,0" VerticalAlignment="Top" Click="EasterButton_Click" Height="51" Width="170">
 
+
+        </Button>
 
     </Grid>
 </Window>
