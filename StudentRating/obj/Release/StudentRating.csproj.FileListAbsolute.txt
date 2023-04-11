@@ -42,3 +42,5 @@ C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Release\Window1.g.cs
 C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Release\Window2.g.cs
 C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Release\Window1.baml
 C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Release\Window2.baml
+C:\Users\trety\Desktop\StudentRating\StudentRating\bin\Release\Resourses\my.mp4
+C:\Users\trety\Desktop\StudentRating\StudentRating\bin\Release\Resourses\my2.mp4
