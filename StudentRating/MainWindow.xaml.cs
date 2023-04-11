@@ -493,30 +493,6 @@ namespace RUN
             adapter.Update(dt);
         }
 
-
-        void Easter()
-        {
-            Window1 Easter1 = new Window1();
-            Window2 Easter2 = new Window2();
-            if (EName.Text == "Steve" && ESurname.Text == "Harvey")
-            {
-                Easter1.Show();
-            }
-            else if (EName.Text == "Walter" && ESurname.Text == "White")
-            {
-                Easter2.Show();
-            }
-        }
-
-        private void EasterButton_Click(object sender, RoutedEventArgs e)
-        {
-            Easter();
-
-        }
-
-
-
-
         /*================================================================================*/
 
         void Delete()
@@ -553,5 +529,69 @@ namespace RUN
 
         }
 
+
+
+
+
+
+
+
+
+
+        void Easter()
+        {
+
+            Window1 Easter1 = new Window1();
+            Easter1.Show();
+            if (EName.Text == "Steve" && ESurname.Text == "Harvey")
+            {
+
+                Easter1.WalterWhite.Visibility = Visibility.Hidden;
+                Easter1.CarcassGunrunner.Visibility = Visibility.Hidden;
+                Easter1.WalterWhite.Volume = 0;
+                Easter1.CarcassGunrunner.Volume = 0;
+                Easter1.SteveHarvei.Volume = 1;
+                Easter1.Width = 714;
+                Easter1.Height = 563;
+                Easter1.SteveHarvei.Visibility = Visibility.Visible;
+            }
+            else if (EName.Text == "Walter" && ESurname.Text == "White")
+            {
+
+                Easter1.SteveHarvei.Visibility = Visibility.Hidden;
+                Easter1.CarcassGunrunner.Volume = 0;
+                Easter1.SteveHarvei.Volume = 0;
+                Easter1.CarcassGunrunner.Visibility = Visibility.Hidden;
+                Easter1.WalterWhite.Visibility = Visibility.Visible;
+                Easter1.Width = 1270;
+                Easter1.Height = 751;
+                Easter1.WalterWhite.Volume = 1;
+
+
+            }
+            else if (EName.Text == "Carcass" && ESurname.Text == "Gunrunner")
+            {
+                
+                Easter1.SteveHarvei.Visibility = Visibility.Hidden;
+                Easter1.WalterWhite.Visibility = Visibility.Hidden;
+                Easter1.SteveHarvei.Volume = 0;
+                Easter1.WalterWhite.Volume = 0;
+                Easter1.CarcassGunrunner.Visibility = Visibility.Visible;
+                Easter1.Width = 732;
+                Easter1.Height = 751;
+                Easter1.CarcassGunrunner.Volume = 1;
+
+
+            }
+
+        }
+
+        private void EasterButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            Easter();
+
+
+        }
     }
 }

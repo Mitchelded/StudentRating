@@ -40,5 +40,6 @@ C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Debug\StudentRating.exe
 C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Debug\StudentRating.pdb
 C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Debug\Window1.g.cs
 C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Debug\Window1.baml
-C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Debug\Window2.g.cs
-C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Debug\Window2.baml
+C:\Users\trety\Desktop\StudentRating\StudentRating\bin\Debug\Resourses\my2.mp4
+C:\Users\trety\Desktop\StudentRating\StudentRating\bin\Debug\Resourses\my3.mp4
+C:\Users\trety\Desktop\StudentRating\StudentRating\bin\Debug\Resourses\my.mp4

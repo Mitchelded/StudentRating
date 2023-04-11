@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resourses/my2.mp4")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resourses/my.mp4")]
 
 
