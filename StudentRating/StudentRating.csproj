@@ -147,5 +147,10 @@
   <ItemGroup>
     <Resource Include="Steve-Harvey-eskom-load-shedding.jpg" />
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resourses\my.mp4" />
+    <Resource Include="Resourses\my2.mp4" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -22,6 +22,7 @@ namespace StudentRating
         public Window1()
         {
             InitializeComponent();
+            
         }
     }
 }

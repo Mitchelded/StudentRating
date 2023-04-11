@@ -38,3 +38,7 @@ C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Release\StudentRating.csp
 C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Release\StudentRating.csproj.CopyComplete
 C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Release\StudentRating.exe
 C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Release\StudentRating.pdb
+C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Release\Window1.g.cs
+C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Release\Window2.g.cs
+C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Release\Window1.baml
+C:\Users\trety\Desktop\StudentRating\StudentRating\obj\Release\Window2.baml

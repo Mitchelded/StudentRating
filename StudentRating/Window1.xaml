@@ -8,7 +8,8 @@
         Title="Window1" Height="450" Width="580">
     <Grid>
         <MediaElement Name="VideoControl" 
-              Source="C:\Users\trety\Desktop\StudentRating\StudentRating\bin\Release\my.mp4" >
+              Source="Resourses\my.mp4" >
         </MediaElement>
+        
     </Grid>
 </Window>

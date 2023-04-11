@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("steve-harvey-eskom-load-shedding.jpg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resourses/my2.mp4")]
 
 
