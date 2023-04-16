@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Window1" Height="551" Width="714">
     <Grid>
-        
+
 
         <MediaElement Name="SteveHarvei" >
             <MediaElement.Triggers>
@@ -66,7 +66,42 @@
             </MediaElement.Triggers>
         </MediaElement>
 
+        <MediaElement Name="MinecraftDirtBlock" >
+            <MediaElement.Triggers>
+                <EventTrigger RoutedEvent="MediaElement.Loaded">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
 
+                                <!-- The MediaTimeline has a RepeatBehavior="Forever" which makes the media play
+                     over and over indefinitely.-->
+                                <MediaTimeline Source="Resourses\my4.mp4" Storyboard.TargetName="MinecraftDirtBlock"  
+                 RepeatBehavior="Forever" />
 
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </MediaElement.Triggers>
+        </MediaElement>
+
+        <MediaElement Name="OmniMan" >
+            <MediaElement.Triggers>
+                <EventTrigger RoutedEvent="MediaElement.Loaded">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+
+                                <!-- The MediaTimeline has a RepeatBehavior="Forever" which makes the media play
+                     over and over indefinitely.-->
+                                <MediaTimeline Source="Resourses\my5.mp4" Storyboard.TargetName="OmniMan"  
+                 RepeatBehavior="Forever" />
+
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </MediaElement.Triggers>
+        </MediaElement>
     </Grid>
 </Window>

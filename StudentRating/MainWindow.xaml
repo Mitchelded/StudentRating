@@ -26,29 +26,42 @@
         <DataGrid Name="dg" HorizontalAlignment="Left" Height="379" VerticalAlignment="Top" Width="514" Margin="255,35,0,0" MouseLeftButtonUp="dg_MouseLeftButtonUp"/>
 
         <TextBox Name="EId" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,50,0,0"/>
-        <Label Content="Id" HorizontalAlignment="Left" Margin="99,50,0,0" VerticalAlignment="Top" Height="26" Width="20"/>
+        <Label x:Name="lId" Content="Id" HorizontalAlignment="Left" Margin="99,50,0,0" VerticalAlignment="Top" Height="26" Width="20"/>
 
-        <TextBox Name="ESurname" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,90,0,0" x:FieldModifier="public"/>
-        <Label Content="Surname" HorizontalAlignment="Left" Margin="60,90,0,0" VerticalAlignment="Top" Height="26" Width="57"/>
+        <TextBox Name="EHost" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="145" Margin="106,50,0,0" Visibility="Hidden"/>
+        <Label x:Name="lHost" Content="Host" HorizontalAlignment="Left" Margin="75,50,0,0" VerticalAlignment="Top" Height="26" Width="46" Visibility="Hidden"/>
 
-        <TextBox Name="EName" HorizontalAlignment="Left" Height="22" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,130,0,0" x:FieldModifier="public"/>
-        <Label Content="Name" HorizontalAlignment="Left" Margin="77,130,0,0" VerticalAlignment="Top" Height="26" Width="42"/>
+        <TextBox Name="ESurname" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,130,0,0"  x:FieldModifier="public"/>
+        <Label x:Name="LSurname" Content="Surname" HorizontalAlignment="Left" Margin="63,130,0,0"  VerticalAlignment="Top" Height="26" Width="57"/>
 
-        <TextBox Name="EPatronymic" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,170,0,0"/>
-        <Label Content="Patronymic" HorizontalAlignment="Left" Margin="50,170,0,0" VerticalAlignment="Top" Height="26" Width="69"/>
+        <TextBox Name="EDataBase" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,90,0,0" x:FieldModifier="public" Visibility="Hidden"/>
+        <Label x:Name="LDataBase" Content="DataBase" HorizontalAlignment="Left" Margin="60,90,0,0" VerticalAlignment="Top" Height="26" Width="57" Visibility="Hidden"/>
+
+        <TextBox Name="EName" HorizontalAlignment="Left" Height="22" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,90,0,0" x:FieldModifier="public"/>
+        <Label x:Name="lName" Content="Name" HorizontalAlignment="Left" Margin="77,90,0,0" VerticalAlignment="Top" Height="26" Width="42"/>
+
+        <TextBox Name="EUId" HorizontalAlignment="Left" Height="22" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,130,0,0" x:FieldModifier="public" Visibility="Hidden"/>
+        <Label x:Name="lUId" Content="UId" HorizontalAlignment="Left" Margin="77,130,0,0" VerticalAlignment="Top" Height="26" Width="42" Visibility="Hidden"/>
+
+        <TextBox Name="EPatronymic" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,170,0,0" Visibility="Hidden"/>
+        <Label x:Name="lPatronymic" Content="Patronymic" HorizontalAlignment="Left" Margin="50,170,0,0" VerticalAlignment="Top" Height="26" Width="69" Visibility="Hidden"/>
+
+        <TextBox Name="EPassword" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,170,0,0"/>
+        <Label x:Name="lPassword" Content="Password" HorizontalAlignment="Left" Margin="50,170,0,0" VerticalAlignment="Top" Height="26" Width="69"/>
 
         <TextBox x:Name="EScore" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,250,0,0"/>
-        <Label Content="Score" HorizontalAlignment="Left" Margin="80,250,0,0" VerticalAlignment="Top" Height="26" Width="39"/>
+        <Label x:Name="LScore" Content="Score" HorizontalAlignment="Left" Margin="80,250,0,0" VerticalAlignment="Top" Height="26" Width="39"/>
 
         <TextBox x:Name="EObject" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="116,210,0,0"/>
-        <Label Content="Object" HorizontalAlignment="Left" Margin="75,210,0,0" VerticalAlignment="Top" Height="26" Width="45"/>
-        
+        <Label x:Name="LObject" Content="Object" HorizontalAlignment="Left" Margin="75,210,0,0" VerticalAlignment="Top" Height="26" Width="45"/>
+
+
         <TextBox x:Name="TxtFilePath" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" Text="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/test2.txt" VerticalAlignment="Top" Width="198" Margin="12,302,0,0"/>
 
+        <Button x:Name="bAccept" Width="100" Height="30" Content="Авторизация" Click="Login_Click" Margin="669,435,31,19" />
 
-        
-        
-        
+
+
         <Button Content="Import" HorizontalAlignment="Left" Margin="210,302,0,0" VerticalAlignment="Top" Click="BtnImport_Click" Height="32" Width="40"/>
         <TextBox x:Name="TxtFilePath_Copy" HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/test2.txt" VerticalAlignment="Top" Width="198" Margin="12,371,0,0"/>
         <Button HorizontalAlignment="Left" Margin="210,371,0,0" VerticalAlignment="Top" Click="BtnExport_Click" Content="Export" Height="33" Width="38"/>

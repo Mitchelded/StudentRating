@@ -15,12 +15,10 @@ using System.Windows.Shapes;
 using MySql.Data;
 using System.Data;
 using MySql.Data.Types;
-using System.Data.Odbc;
-using static Mysqlx.Notice.Frame.Types;
 using MySql.Data.MySqlClient;
-using Google.Protobuf.WellKnownTypes;
 using System.Windows.Controls.Primitives;
 using System.IO;
+using static System.Net.Mime.MediaTypeNames;
 using StudentRating;
 
 namespace RUN
@@ -35,30 +33,27 @@ namespace RUN
     {
         public int Id { get; set; }
 
-        public String Surname { get; set; }
-
         public String Name { get; set; }
 
+        public String Surname { get; set; }
+
         public String Patronymic { get; set; }
-        
+
         public String Object { get; set; }
 
         public int Score { get; set; }
 
 
-        public Record(int Id, String Surname, String Name, String Patronymic, String Object, int Score)
+        public Record(int Id, String Name, String Surname, String Patronymic, String Object, int Score)
 
         {
             this.Id = Id;
-
-            this.Surname = Surname;
-
             this.Name = Name;
-
+            this.Surname = Surname;
             this.Patronymic = Patronymic;
             this.Object = Object;
             this.Score = Score;
-            
+
         }
     }
 
@@ -77,7 +72,7 @@ namespace RUN
         DataRow dr;
 
 
-        string ConnStr;
+        public string ConnStr;
 
         String SelectText = "Select * From StudentRating Order By id";
 
@@ -110,6 +105,7 @@ namespace RUN
             InitializeComponent();
             radioonline.IsChecked = true;
 
+
         }
 
         /*================================================================================*/
@@ -131,22 +127,78 @@ namespace RUN
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            if (radioonline.IsChecked==true)
+            if (radioonline.IsChecked == true)
             {
-                // Устанавливаем значение String ConnStr для второго RadioButton
-                ConnStr = "Server=sql7.freemysqlhosting.net;" +
-                          "Port=3306;" +
-                          "DataBase=sql7611480;" +
-                          "UId=sql7611480;" +
-                          "PassWord=i9tZyP4N83;";
 
-                // Сбрасываем состояние первого RadioButton
-                radiolocal.IsChecked = false;
-                radioMelnichenko.IsChecked = false;
-                Refresh();
+                lId.Visibility = Visibility.Hidden;
+                lName.Visibility = Visibility.Hidden;
+                LSurname.Visibility = Visibility.Hidden;
+                lPatronymic.Visibility = Visibility.Hidden;
+                LScore.Visibility = Visibility.Hidden;
+                LObject.Visibility = Visibility.Hidden;
+
+                EId.Visibility = Visibility.Hidden;
+                EName.Visibility = Visibility.Hidden;
+                EPatronymic.Visibility = Visibility.Hidden;
+                EScore.Visibility = Visibility.Hidden;
+                EObject.Visibility = Visibility.Hidden;
+                ESurname.Visibility = Visibility.Hidden;
+
+                EHost.Visibility = Visibility.Visible;
+                EDataBase.Visibility = Visibility.Visible;
+                EUId.Visibility = Visibility.Visible;
+                EPassword.Visibility = Visibility.Visible;
+
+                lHost.Visibility = Visibility.Visible;
+                LDataBase.Visibility = Visibility.Visible;
+                lUId.Visibility = Visibility.Visible;
+                lPassword.Visibility = Visibility.Visible;
+
+                EHost.Text = "sql7.freemysqlhosting.net";
+                EDataBase.Text = "sql7613096";
+                EUId.Text = "sql7613096";
+                EPassword.Text = "924gtJUenf";
+
             }
-        }
 
+        }
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+
+            ConnStr = $"Server={EHost.Text};" +
+                         "Port=3306;" +
+                         $"DataBase={EDataBase.Text};" +
+                         $"UId={EUId.Text};" +
+                         $"PassWord={EPassword.Text};";
+            radiolocal.IsChecked = false;
+            radioMelnichenko.IsChecked = false;
+            Refresh();
+            lId.Visibility = Visibility.Visible;
+            lName.Visibility = Visibility.Visible;
+            LSurname.Visibility = Visibility.Visible;
+            lPatronymic.Visibility = Visibility.Visible;
+            LScore.Visibility = Visibility.Visible;
+            LObject.Visibility = Visibility.Visible;
+
+            EId.Visibility = Visibility.Visible;
+            EName.Visibility = Visibility.Visible;
+            EPatronymic.Visibility = Visibility.Visible;
+            EScore.Visibility = Visibility.Visible;
+            EObject.Visibility = Visibility.Visible;
+            ESurname.Visibility = Visibility.Visible;
+
+            EHost.Visibility = Visibility.Hidden;
+            EDataBase.Visibility = Visibility.Hidden;
+            EUId.Visibility = Visibility.Hidden;
+            EPassword.Visibility = Visibility.Hidden;
+
+            lHost.Visibility = Visibility.Hidden;
+            LDataBase.Visibility = Visibility.Hidden;
+            lUId.Visibility = Visibility.Hidden;
+            lPassword.Visibility = Visibility.Hidden;
+
+            bAccept.Visibility = Visibility.Hidden;
+        }
         private void radioButton3_CheckedChanged(object sender, RoutedEventArgs e)
         {
             if (radioMelnichenko.IsChecked == true)
@@ -171,7 +223,7 @@ namespace RUN
         private void miSelect_Click(object sender, RoutedEventArgs e)
 
         {
-            
+
             Refresh();
         }
 
@@ -222,9 +274,12 @@ namespace RUN
 
             EId.Text = Convert.ToString(dt.Rows[n][0]);
 
-            ESurname.Text = (String)dt.Rows[n][1];
+            EName.Text = (String)dt.Rows[n][1];
 
-            EName.Text = (String)dt.Rows[n][2];
+
+            ESurname.Text = (String)dt.Rows[n][2];
+
+
 
             EPatronymic.Text = (String)dt.Rows[n][3];
 
@@ -247,7 +302,7 @@ namespace RUN
         {
             try
             {
-                
+
                 conn = new MySqlConnection(ConnStr);
                 conn.Open();
                 string truncateQuery = $"TRUNCATE TABLE StudentRating";
@@ -410,7 +465,7 @@ namespace RUN
 
             cmd.Parameters.Add("@Id", MySqlDbType.Int32, 4, "Id");
             cmd.Parameters.Add("@Name", MySqlDbType.VarChar, 45, "Name");
-            cmd.Parameters.Add("@Surname", MySqlDbType.VarChar, 45, "Surname");  
+            cmd.Parameters.Add("@Surname", MySqlDbType.VarChar, 45, "Surname");
             cmd.Parameters.Add("@Patronymic", MySqlDbType.VarChar, 45, "Patronymic");
             cmd.Parameters.Add("@Object", MySqlDbType.VarChar, 45, "Object");
             cmd.Parameters.Add("@Score", MySqlDbType.Int32, 4, "Score");
@@ -540,7 +595,6 @@ namespace RUN
 
         void Easter()
         {
-
             Window1 Easter1 = new Window1();
             Easter1.Show();
             if (EName.Text == "Steve" && ESurname.Text == "Harvey")
@@ -548,8 +602,12 @@ namespace RUN
 
                 Easter1.WalterWhite.Visibility = Visibility.Hidden;
                 Easter1.CarcassGunrunner.Visibility = Visibility.Hidden;
+                Easter1.MinecraftDirtBlock.Visibility = Visibility.Hidden;
+                Easter1.OmniMan.Visibility = Visibility.Hidden;
                 Easter1.WalterWhite.Volume = 0;
                 Easter1.CarcassGunrunner.Volume = 0;
+                Easter1.MinecraftDirtBlock.Volume = 0;
+                Easter1.OmniMan.Volume = 0;
                 Easter1.SteveHarvei.Volume = 1;
                 Easter1.Width = 714;
                 Easter1.Height = 563;
@@ -559,9 +617,15 @@ namespace RUN
             {
 
                 Easter1.SteveHarvei.Visibility = Visibility.Hidden;
+                Easter1.CarcassGunrunner.Visibility = Visibility.Hidden;
+                Easter1.MinecraftDirtBlock.Visibility = Visibility.Hidden;
+                Easter1.OmniMan.Visibility = Visibility.Hidden;
+
                 Easter1.CarcassGunrunner.Volume = 0;
                 Easter1.SteveHarvei.Volume = 0;
-                Easter1.CarcassGunrunner.Visibility = Visibility.Hidden;
+                Easter1.MinecraftDirtBlock.Volume = 0;
+                Easter1.OmniMan.Volume = 0;
+
                 Easter1.WalterWhite.Visibility = Visibility.Visible;
                 Easter1.Width = 1270;
                 Easter1.Height = 751;
@@ -571,11 +635,17 @@ namespace RUN
             }
             else if (EName.Text == "Carcass" && ESurname.Text == "Gunrunner")
             {
-                
+
                 Easter1.SteveHarvei.Visibility = Visibility.Hidden;
                 Easter1.WalterWhite.Visibility = Visibility.Hidden;
+                Easter1.MinecraftDirtBlock.Visibility = Visibility.Hidden;
+                Easter1.OmniMan.Visibility = Visibility.Hidden;
+
                 Easter1.SteveHarvei.Volume = 0;
                 Easter1.WalterWhite.Volume = 0;
+                Easter1.MinecraftDirtBlock.Volume = 0;
+                Easter1.OmniMan.Volume = 0;
+
                 Easter1.CarcassGunrunner.Visibility = Visibility.Visible;
                 Easter1.Width = 732;
                 Easter1.Height = 751;
@@ -584,6 +654,47 @@ namespace RUN
 
             }
 
+            else if (EName.Text == "Minecraft" && ESurname.Text == "Dirt" && EPatronymic.Text == "Block")
+            {
+
+                Easter1.SteveHarvei.Visibility = Visibility.Hidden;
+                Easter1.WalterWhite.Visibility = Visibility.Hidden;
+                Easter1.CarcassGunrunner.Visibility = Visibility.Hidden;
+                Easter1.OmniMan.Visibility = Visibility.Hidden;
+
+                Easter1.SteveHarvei.Volume = 0;
+                Easter1.WalterWhite.Volume = 0;
+                Easter1.OmniMan.Volume = 0;
+                Easter1.CarcassGunrunner.Volume = 0;
+
+                Easter1.MinecraftDirtBlock.Visibility = Visibility.Visible;
+                Easter1.Width = 732;
+                Easter1.Height = 751;
+                Easter1.MinecraftDirtBlock.Volume = 1;
+
+
+            }
+
+            else if (EName.Text == "Omni" && ESurname.Text == "Man")
+            {
+
+                Easter1.SteveHarvei.Visibility = Visibility.Hidden;
+                Easter1.WalterWhite.Visibility = Visibility.Hidden;
+                Easter1.MinecraftDirtBlock.Visibility = Visibility.Hidden;
+                Easter1.CarcassGunrunner.Visibility = Visibility.Hidden;
+
+                Easter1.SteveHarvei.Volume = 0;
+                Easter1.WalterWhite.Volume = 0;
+                Easter1.MinecraftDirtBlock.Volume = 0;
+                Easter1.CarcassGunrunner.Volume = 0;
+
+                Easter1.OmniMan.Visibility = Visibility.Visible;
+                Easter1.Width = 732;
+                Easter1.Height = 751;
+                Easter1.OmniMan.Volume = 1;
+
+
+            }
         }
 
         private void EasterButton_Click(object sender, RoutedEventArgs e)
