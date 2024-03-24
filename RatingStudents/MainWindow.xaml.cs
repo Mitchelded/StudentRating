@@ -23,11 +23,11 @@ public partial class MainWindow : Window
         {
             MessageBox.Show($"{(String.IsNullOrEmpty(TbPort.Text) ? "Port" : "Password")} Has Not Been Specified", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-
-
-        // if (PbPassword.Password == null)
-        // {
-        //     MessageBox.Show("Password Has Not Been Specified", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        // }
+        else
+        {
+            Window_Students windowStudents = new Window_Students();
+            windowStudents.Show();
+            this.Close();
+        }
     }
 }
