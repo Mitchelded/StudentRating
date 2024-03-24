@@ -1,0 +1,24 @@
+﻿<Window x:Class="RatingStudents.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RatingStudents"
+        mc:Ignorable="d"
+        Title="Window Connection" Height="150" Width="300">
+    <Grid>
+        <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" >
+                <PasswordBox Width="150" Height="24" x:Name="PbPassword"/>
+                <Label Width="60" Height="24" Content="Password" HorizontalAlignment="Right"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                <TextBox Width="150" Height="25" x:Name="TbPort"/>
+                <Label Width="35" Height="25" Content="Port" HorizontalAlignment="Right"/>
+            </StackPanel> 
+            <Button Width="150" Height="24" Margin="0,20,0,0" Content="Run" x:Name="BtnRun" Click="BtnRun_OnClick"/>
+        </StackPanel>
+
+        
+    </Grid>
+</Window>
