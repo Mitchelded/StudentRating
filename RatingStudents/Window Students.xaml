@@ -9,14 +9,14 @@
     <Grid>
         <Menu>
             <MenuItem Header="Base">
-                <MenuItem Header="Select"/>
-                <MenuItem Header="Isert"/>
+                <MenuItem Header="Select" Click="MiSelect_OnClick" Name="MiSelect"/>
+                <MenuItem Header="Insert" Name="MiInsert" Click="MiInsert_OnClick"/>
                 <MenuItem Header="Update"/>
                 <MenuItem Header="Delete"/>
                 <MenuItem Header="Clear"/>
             </MenuItem>
                 <MenuItem Header="Window">
-                    <MenuItem Header="Window Subjects" x:Name="miWindowSubject" Click="miWindowSubject_Click"/>
+                    <MenuItem Header="Window Subjects" x:Name="MiWindowSubject" Click="miWindowSubject_Click"/>
                     <MenuItem Header="Window Ratings"/>
             </MenuItem>
                 <MenuItem Header="Help">
@@ -24,23 +24,22 @@
                     <MenuItem Header="About"/>
             </MenuItem>
         </Menu>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="50,50,0,0">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="50,0,0,0">
             <StackPanel>
-                <TextBox Width="200" Margin="0,0,0,10" x:Name="tbFirstName"/>
-                <TextBox Width="200" Margin="0,0,0,10" x:Name="tbSecondName"/>
-                <TextBox Width="200" Margin="0,0,0,10" x:Name="tbPatronymic"/>
-                <TextBox Width="200" Margin="0,0,0,10" x:Name="tbAdress"/>
-                <TextBox Width="200" Margin="0,0,0,10" x:Name="tbSubject"/>
+                <TextBox Width="200" Margin="0,50,0,10" x:Name="TbFirstName"/>
+                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbSecondName"/>
+                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbPatronymic"/>
+                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbAddress"/>
+                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbSubject"/>
             </StackPanel>
             <StackPanel>
-
-                <Label Content="First Name" Margin="10,0,0,0"/>
+                <Label Content="First Name" Margin="10,45,0,0"/>
                 <Label Content="Second Name" Margin="10,0,0,0"/>
-                <Label Content="Patronymic" Margin="10,0,0,0"/>
-                <Label Content="Adress" Margin="10,0,0,0"/>
-                <Label Content="Subject" Margin="10,0,0,0"/>
+                <Label Content="Patronymic" Margin="10,5,0,0"/>
+                <Label Content="Address" Margin="10,0,5,0"/>
+                <Label Content="Subject" Margin="10,0,5,0"/>
             </StackPanel>
-            <DataGrid Height="350" Width="430" Margin="10,-35,0,0"/>
+            <DataGrid Height="350" Width="430" Margin="10,-50,0,0" Name="Dg"/>
         </StackPanel>
     </Grid>
 </Window>
