@@ -8,4 +8,10 @@ public partial class Window_Students : Window
     {
         InitializeComponent();
     }
+
+    private void miWindowSubject_Click(object sender, RoutedEventArgs e)
+    {
+        Window_Subjects window = new Window_Subjects();
+        window.Show();
+    }
 }
