@@ -11,9 +11,9 @@
             <MenuItem Header="Base">
                 <MenuItem Header="Select" Click="MiSelect_OnClick" Name="MiSelect"/>
                 <MenuItem Header="Insert" Name="MiInsert" Click="MiInsert_OnClick"/>
-                <MenuItem Header="Update"/>
-                <MenuItem Header="Delete"/>
-                <MenuItem Header="Clear"/>
+                <MenuItem Header="Update" Name="MiUpdate" Click="MiUpdate_OnClick"/>
+                <MenuItem Header="Delete" Name="MiDelete" Click="MiDelete_OnClick"/>
+                <MenuItem Header="Clear" Name="MiClear" Click="MiClear_OnClick"/>
             </MenuItem>
                 <MenuItem Header="Window">
                     <MenuItem Header="Window Subjects" x:Name="MiWindowSubject" Click="miWindowSubject_Click"/>
@@ -30,16 +30,18 @@
                 <TextBox Width="200" Margin="0,0,0,10" x:Name="TbSecondName"/>
                 <TextBox Width="200" Margin="0,0,0,10" x:Name="TbPatronymic"/>
                 <TextBox Width="200" Margin="0,0,0,10" x:Name="TbAddress"/>
-                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbSubject"/>
+                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbSubject" TextChanged="TbSubject_OnTextChanged"/>
+                <ComboBox Name="CbSubject" SelectionChanged="CbSubject_OnSelectionChanged"/>
             </StackPanel>
             <StackPanel>
                 <Label Content="First Name" Margin="10,45,0,0"/>
                 <Label Content="Second Name" Margin="10,0,0,0"/>
                 <Label Content="Patronymic" Margin="10,5,0,0"/>
                 <Label Content="Address" Margin="10,0,5,0"/>
-                <Label Content="Subject" Margin="10,0,5,0"/>
+                <Label Content="Subject Id" Margin="10,5,5,0"/>
+                <Label Content="Subject" Margin="10,5,5,0"/>
             </StackPanel>
-            <DataGrid Height="350" Width="430" Margin="10,-50,0,0" Name="Dg"/>
+            <DataGrid Height="350" Width="430" Margin="10,-50,0,0" Name="Dg" SelectionChanged="Dg_OnSelected"/>
         </StackPanel>
     </Grid>
 </Window>
