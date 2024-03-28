@@ -9,11 +9,11 @@
     <Grid>
         <Menu>
             <MenuItem Header="Base">
-                <MenuItem Header="Select"/>
-                <MenuItem Header="Isert"/>
-                <MenuItem Header="Update"/>
-                <MenuItem Header="Delete"/>
-                <MenuItem Header="Clear"/>
+                <MenuItem Header="Select" Name="MiSelect" Click="MiSelect_OnClick"/>
+                <MenuItem Header="Insert" Name="MiInsert" Click="MiInsert_OnClick"/>
+                <MenuItem Header="Update" Name="MiUpdate" Click="MiUpdate_OnClick"/>
+                <MenuItem Header="Delete" Name="MiDelete" Click="MiDelete_OnClick"/>
+                <MenuItem Header="Clear" Name="MiClear" Click="MiClear_OnClick"/>
             </MenuItem>
             <MenuItem Header="Window">
                 <MenuItem Header="Window Students" x:Name="miWindowStudents" Click="miWindowStudents_Click"/>
@@ -26,10 +26,10 @@
         </Menu>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="50,50,0,0">
             <StackPanel>
-                <TextBox Width="200" Margin="0,0,0,10" x:Name="tbCourseName"/>
-                <TextBox Width="200" Margin="0,0,0,10" x:Name="tbDescription"/>
-                <TextBox Width="200" Margin="0,0,0,10" x:Name="tbDuration"/>
-                <TextBox Width="200" Margin="0,0,0,10" x:Name="tbInstructor"/>
+                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbCourseName"/>
+                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbDescription"/>
+                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbDuration"/>
+                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbInstructor"/>
             </StackPanel>
             <StackPanel>
 
@@ -38,7 +38,7 @@
                 <Label Content="Duration" Margin="10,0,0,0"/>
                 <Label Content="Instructor" Margin="10,0,0,0"/>
             </StackPanel>
-            <DataGrid Height="350" Width="430" Margin="10,-35,0,0"/>
+            <DataGrid Height="350" Width="430" Margin="10,-35,0,0" Name="Dg" SelectionChanged="Dg_OnSelectionChanged"/>
         </StackPanel>
     </Grid>
 </Window>

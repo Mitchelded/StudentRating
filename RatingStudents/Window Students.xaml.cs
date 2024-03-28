@@ -47,7 +47,7 @@ public partial class Window_Students : Window
     private void MiInsert_OnClick(object sender, RoutedEventArgs e)
     {
         object[] parameters =
-            { TbFirstName.Text, TbSecondName.Text, TbPatronymic.Text, TbAddress.Text, int.Parse(TbSubject.Text) };
+            [TbFirstName.Text, TbSecondName.Text, TbPatronymic.Text, TbAddress.Text, int.Parse(TbSubject.Text)];
         SqlParameter[] sqlParameters = new SqlParameter[]
         {
             new SqlParameter("@param1", parameters[0]),
@@ -79,7 +79,7 @@ public partial class Window_Students : Window
             new SqlParameter("@param4", value4),
             new SqlParameter("@param5", value5),
             new SqlParameter("@primaryKeyValue",
-                primaryKeyValue) // замените primaryKeyValue на значение первичного ключа выбранной строки
+                primaryKeyValue)
         };
 
         // Выполняем запрос на обновление
