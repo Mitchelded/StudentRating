@@ -7,7 +7,7 @@ namespace RatingStudents;
 
 public partial class Window_Students : Window
 {
-    private const string SelectQuery = "SELECT Students.*, Subjects.course_name FROM dbo.Students";
+    private const string SelectQuery = "SELECT Students.* FROM dbo.Students";
 
     private const string InsertQuery = "INSERT INTO dbo.Students VALUES (@param1, @param2, @param3, @param4)";
 
@@ -17,7 +17,7 @@ public partial class Window_Students : Window
 
     private const string DeleteQuery = "DELETE FROM dbo.Students WHERE id = @primaryKeyValue";
 
-    private const string TruncateQuery = $"TRUNCATE TABLE dbo.Students";
+    private const string TruncateQuery = $"DELETE FROM  dbo.Students";
     
 
     private readonly ConnectionDb _conn;

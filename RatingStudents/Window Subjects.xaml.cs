@@ -22,17 +22,18 @@ namespace RatingStudents
     public partial class Window_Subjects : Window
     {
         
-        private const string SelectQuery = "SELECT * FROM dbo.Subjects";
+        private const string SelectQuery = "SELECT * FROM dbo.Subject";
 
-        private const string InsertQuery = "INSERT INTO dbo.Subjects VALUES (@param1, @param2, @param3, @param4)";
+        private const string InsertQuery = "INSERT INTO dbo.Subject VALUES (@param1, @param2, @param3, @param4)";
 
-        private const string UpdateQuery = "UPDATE dbo.Subjects SET course_name = @param1, description = @param2, " +
+        private const string UpdateQuery = "UPDATE dbo.Subject SET course_name = @param1, description = @param2, " +
                                            "duration = @param3, instructor = @param4 " +
                                            "WHERE id = @primaryKeyValue";
 
-        private const string DeleteQuery = "DELETE FROM dbo.Subjects WHERE id = @primaryKeyValue";
+        private const string DeleteQuery = "DELETE FROM dbo.Subject WHERE id = @primaryKeyValue";
+        private const string DeleteQueryChild = "DELETE FROM dbo.Ratings WHERE subject_id = @primaryKeyValue";
 
-        private const string TruncateQuery = "TRUNCATE TABLE dbo.Subjects";
+        private const string TruncateQuery = "Delete From dbo.Subject";
         
         private readonly ConnectionDb _conn;
         public Window_Subjects()
@@ -125,6 +126,13 @@ namespace RatingStudents
                 {
                     new SqlParameter("@primaryKeyValue", primaryKeyValue)
                 };
+
+                SqlParameter[] parameters2 = new SqlParameter[]
+                {
+                    new SqlParameter("@primaryKeyValue", primaryKeyValue)
+                };
+
+                _conn.DeleteData(DeleteQueryChild, parameters2);
 
                 // Выполняем запрос на удаление
                 _conn.DeleteData(DeleteQuery, parameters);
