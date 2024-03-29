@@ -7,19 +7,18 @@ namespace RatingStudents;
 
 public partial class Window_Students : Window
 {
-    private const string SelectQuery = "SELECT Students.*, Subjects.course_name FROM dbo.Students INNER JOIN dbo.Subjects ON Students.subjects_id = Subjects.id;";
+    private const string SelectQuery = "SELECT Students.*, Subjects.course_name FROM dbo.Students";
 
-    private const string InsertQuery = "INSERT INTO dbo.Students VALUES (@param1, @param2, @param3, @param4, @param5)";
+    private const string InsertQuery = "INSERT INTO dbo.Students VALUES (@param1, @param2, @param3, @param4)";
 
-    private const string UpdateQuery = "UPDATE dbo.Students SET first_name = @param1, second_name = @param2, " +
-                                       "patronymic = @param3, adress = @param4, subjects_id = @param5 " +
+    private const string UpdateQuery = "UPDATE dbo.Students SET first_name = @param1, second_name = @param2 " +
+                                       "patronymic = @param3, adress = @param4" +
                                        "WHERE id = @primaryKeyValue";
 
     private const string DeleteQuery = "DELETE FROM dbo.Students WHERE id = @primaryKeyValue";
 
     private const string TruncateQuery = $"TRUNCATE TABLE dbo.Students";
     
-    private const string SelectComboBoxQuery = "SELECT course_name FROM dbo.Subjects";
 
     private readonly ConnectionDb _conn;
 
@@ -29,7 +28,6 @@ public partial class Window_Students : Window
         _conn = new ConnectionDb();
         DataTable dataTable = _conn.GetDataTable(SelectQuery);
         Dg.ItemsSource = dataTable.DefaultView;
-        CbSubject.ItemsSource = _conn.FillComboBox(SelectComboBoxQuery);
     }
 
     private void miWindowSubject_Click(object sender, RoutedEventArgs e)
@@ -47,14 +45,13 @@ public partial class Window_Students : Window
     private void MiInsert_OnClick(object sender, RoutedEventArgs e)
     {
         object[] parameters =
-            [TbFirstName.Text, TbSecondName.Text, TbPatronymic.Text, TbAddress.Text, int.Parse(TbSubject.Text)];
+            { TbFirstName.Text, TbSecondName.Text, TbPatronymic.Text, TbAddress.Text};
         SqlParameter[] sqlParameters = new SqlParameter[]
         {
             new SqlParameter("@param1", parameters[0]),
             new SqlParameter("@param2", parameters[1]),
             new SqlParameter("@param3", parameters[2]),
-            new SqlParameter("@param4", parameters[3]),
-            new SqlParameter("@param5", parameters[4])
+            new SqlParameter("@param4", parameters[3])
         };
 
         _conn.InsertData(InsertQuery, sqlParameters);
@@ -67,7 +64,6 @@ public partial class Window_Students : Window
         string value2 = TbSecondName.Text; // Вторая колонка в строке
         string value3 = TbPatronymic.Text; // Третья колонка в строке
         string value4 = TbAddress.Text; // Четвертая колонка в строке
-        int value5 = int.Parse(TbSubject.Text); // Пятая колонка в строке
         int primaryKeyValue = int.Parse(selectedRow["id"].ToString());
 
         // Создаем параметры для запроса
@@ -77,7 +73,6 @@ public partial class Window_Students : Window
             new SqlParameter("@param2", value2),
             new SqlParameter("@param3", value3),
             new SqlParameter("@param4", value4),
-            new SqlParameter("@param5", value5),
             new SqlParameter("@primaryKeyValue",
                 primaryKeyValue)
         };
@@ -103,7 +98,6 @@ public partial class Window_Students : Window
 
             TbAddress.Text = selectedRow["adress"].ToString() ?? string.Empty;
 
-            TbSubject.Text = selectedRow["subjects_id"].ToString() ?? string.Empty;
         }
     }
 
@@ -139,21 +133,23 @@ public partial class Window_Students : Window
         _conn.TruncateTable(TruncateQuery);
     }
 
-    private void CbSubject_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+
+
+    private void MiWindowRatings_Click(object sender, RoutedEventArgs e)
     {
-        string? selectedCourse = CbSubject.SelectedItem.ToString();
-        int subjectId = _conn.GetSubjectId(selectedCourse);
-        TbSubject.Text = subjectId.ToString();
+        //Window_Ratings window = new Window_Ratings();
+        //window.Show();
     }
 
-
-    private void TbSubject_OnTextChanged(object sender, TextChangedEventArgs e)
+    private void MiTools_Click(object sender, RoutedEventArgs e)
     {
-        int selectedId = Convert.ToInt32(TbSubject.Text);
-        string? courseName = _conn.GetCourseName(selectedId);
-        if (!string.IsNullOrEmpty(courseName))
-        {
-            CbSubject.SelectedItem = courseName;
-        }
+        MessageBox.Show("1. C# Programming Language\n" +
+            "2. Wpf Libriary", "Tools", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+
+    private void MiAbout_Click(object sender, RoutedEventArgs e)
+    {
+        MessageBox.Show("Student Rating\n" +
+            "Tretyakov Anton Olegovich", "About", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 }

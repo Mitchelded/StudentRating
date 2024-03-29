@@ -17,11 +17,11 @@
             </MenuItem>
                 <MenuItem Header="Window">
                     <MenuItem Header="Window Subjects" x:Name="MiWindowSubject" Click="miWindowSubject_Click"/>
-                    <MenuItem Header="Window Ratings"/>
+                    <MenuItem Header="Window Ratings" Name="MiWindowRatings" Click="MiWindowRatings_Click"/>
             </MenuItem>
                 <MenuItem Header="Help">
-                    <MenuItem Header="Tools"/>
-                    <MenuItem Header="About"/>
+                    <MenuItem Header="Tools" Name="MiTools" Click="MiTools_Click"/>
+                    <MenuItem Header="About" Name="MiAbout" Click="MiAbout_Click"/>
             </MenuItem>
         </Menu>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="50,0,0,0">
@@ -30,16 +30,12 @@
                 <TextBox Width="200" Margin="0,0,0,10" x:Name="TbSecondName"/>
                 <TextBox Width="200" Margin="0,0,0,10" x:Name="TbPatronymic"/>
                 <TextBox Width="200" Margin="0,0,0,10" x:Name="TbAddress"/>
-                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbSubject" TextChanged="TbSubject_OnTextChanged"/>
-                <ComboBox Name="CbSubject" SelectionChanged="CbSubject_OnSelectionChanged"/>
             </StackPanel>
             <StackPanel>
                 <Label Content="First Name" Margin="10,45,0,0"/>
                 <Label Content="Second Name" Margin="10,0,0,0"/>
                 <Label Content="Patronymic" Margin="10,5,0,0"/>
                 <Label Content="Address" Margin="10,0,5,0"/>
-                <Label Content="Subject Id" Margin="10,5,5,0"/>
-                <Label Content="Subject" Margin="10,5,5,0"/>
             </StackPanel>
             <DataGrid Height="350" Width="430" Margin="10,-50,0,0" Name="Dg" SelectionChanged="Dg_OnSelected"/>
         </StackPanel>

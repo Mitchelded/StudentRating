@@ -58,7 +58,7 @@ namespace RatingStudents
         private void MiInsert_OnClick(object sender, RoutedEventArgs e)
         {
             object[] parameters =
-                [TbCourseName.Text, TbDescription.Text, TbDuration.Text, TbInstructor.Text];
+               { TbCourseName.Text, TbDescription.Text, TbDuration.Text, TbInstructor.Text};
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@param1", parameters[0]),
