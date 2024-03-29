@@ -16,9 +16,10 @@ public partial class Window_Students : Window
                                        "WHERE id = @primaryKeyValue";
 
     private const string DeleteQuery = "DELETE FROM dbo.Students WHERE id = @primaryKeyValue";
+    private const string DeleteQueryChild = "DELETE FROM dbo.Ratings WHERE student_id = @primaryKeyValue";
 
     private const string TruncateQuery = $"DELETE FROM  dbo.Students";
-    
+
 
     private readonly ConnectionDb _conn;
 
@@ -77,6 +78,8 @@ public partial class Window_Students : Window
                 primaryKeyValue)
         };
 
+
+
         // Выполняем запрос на обновление
         _conn.UpdateData(UpdateQuery, parameters);
 
@@ -113,6 +116,13 @@ public partial class Window_Students : Window
             {
                 new SqlParameter("@primaryKeyValue", primaryKeyValue)
             };
+
+            SqlParameter[] parameters2 = new SqlParameter[]
+            {
+                new SqlParameter("@primaryKeyValue", primaryKeyValue)
+            };
+
+            _conn.DeleteData(DeleteQueryChild, parameters2);
 
             // Выполняем запрос на удаление
             _conn.DeleteData(DeleteQuery, parameters);
