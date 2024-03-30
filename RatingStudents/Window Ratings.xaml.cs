@@ -1,41 +1,41 @@
-using System.Data;
 using System.Windows;
-using System.Windows.Controls;
 using Microsoft.Data.SqlClient;
+using System.Data;
+using System.Windows.Controls;
 
 namespace RatingStudents;
 
-public partial class Window_Students : Window
+public partial class Window_Ratings : Window
 {
-    private const string SelectQuery = "SELECT dbo.Students.*, Subjects.course_name FROM dbo.Students INNER JOIN dbo.Subjects ON Students.subjects_id = Subjects.id;";
+    private const string SelectQuery = "SELECT dbo.Ratings.*, Students.first_name + ' ' + Students.second_name + ' ' + " +
+                                       "Students.patronymic AS full_name, Subjects.course_name FROM dbo.Ratings " +
+                                       "INNER JOIN Students ON dbo.Ratings.student_id = Students.id " +
+                                       "INNER JOIN Subjects ON dbo.Ratings.subject_id = Subjects.id;";
 
-    private const string InsertQuery = "INSERT INTO dbo.Students VALUES (@param1, @param2, @param3, @param4, @param5)";
+    private const string InsertQuery = "INSERT INTO dbo.Ratings VALUES (@param1, @param2, @param3)";
 
-    private const string UpdateQuery = "UPDATE dbo.Students SET first_name = @param1, second_name = @param2, " +
-                                       "patronymic = @param3, adress = @param4, subjects_id = @param5 " +
+    private const string UpdateQuery = "UPDATE dbo.Ratings SET student_id = @param1, grade = @param2, " +
+                                       "student_id = @param3 " +
                                        "WHERE id = @primaryKeyValue";
 
-    private const string DeleteQuery = "DELETE FROM dbo.Students WHERE id = @primaryKeyValue";
+    private const string DeleteQuery = "DELETE FROM dbo.Ratings WHERE id = @primaryKeyValue";
 
-    private const string TruncateQuery = $"DELETE FROM dbo.Students";
+    private const string TruncateQuery = $"DELETE FROM dbo.Ratings";
     
-    private const string SelectComboBoxQuery = "SELECT course_name FROM dbo.Subjects";
+    private const string SelectComboBoxQuerySubjects = "SELECT course_name FROM dbo.Subjects";
+    private const string SelectComboBoxQueryStudents = "SELECT id, first_name, second_name, patronymic FROM dbo.Students;";
 
     private readonly ConnectionDb _conn;
-
-    public Window_Students()
+    
+    
+    public Window_Ratings()
     {
         InitializeComponent();
         _conn = new ConnectionDb();
         DataTable dataTable = _conn.GetDataTable(SelectQuery);
         Dg.ItemsSource = dataTable.DefaultView;
-        CbSubject.ItemsSource = _conn.FillComboBoxSubjects(SelectComboBoxQuery);
-    }
-
-    private void miWindowSubject_Click(object sender, RoutedEventArgs e)
-    {
-        Window_Subjects window = new Window_Subjects();
-        window.Show();
+        CbSubject.ItemsSource = _conn.FillComboBoxSubjects(SelectComboBoxQuerySubjects);
+        CbStudent.ItemsSource = _conn.FillComboBoxStudents(SelectComboBoxQueryStudents);
     }
 
     private void MiSelect_OnClick(object sender, RoutedEventArgs e)
@@ -44,17 +44,16 @@ public partial class Window_Students : Window
         Dg.ItemsSource = dataTable.DefaultView;
     }
 
+
     private void MiInsert_OnClick(object sender, RoutedEventArgs e)
     {
         object[] parameters =
-            [TbFirstName.Text, TbSecondName.Text, TbPatronymic.Text, TbAddress.Text, int.Parse(TbSubject.Text)];
+            [int.Parse(TbStudent.Text), decimal.Parse(TbGrade.Text), int.Parse(TbSubject.Text)];
         SqlParameter[] sqlParameters = new SqlParameter[]
         {
             new SqlParameter("@param1", parameters[0]),
             new SqlParameter("@param2", parameters[1]),
-            new SqlParameter("@param3", parameters[2]),
-            new SqlParameter("@param4", parameters[3]),
-            new SqlParameter("@param5", parameters[4])
+            new SqlParameter("@param3", parameters[2])
         };
 
         _conn.InsertData(InsertQuery, sqlParameters);
@@ -63,12 +62,10 @@ public partial class Window_Students : Window
     private void MiUpdate_OnClick(object sender, RoutedEventArgs e)
     {
         DataRowView selectedRow = (DataRowView)Dg.SelectedItem;
-        string value1 = TbFirstName.Text; // Первая колонка в строке
-        string value2 = TbSecondName.Text; // Вторая колонка в строке
-        string value3 = TbPatronymic.Text; // Третья колонка в строке
-        string value4 = TbAddress.Text; // Четвертая колонка в строке
-        int value5 = int.Parse(TbSubject.Text); // Пятая колонка в строке
-        int primaryKeyValue = int.Parse(selectedRow["id"].ToString());
+        int value1 = int.Parse(TbStudent.Text.ToString()); // Первая колонка в строке
+        decimal value2 =  decimal.Parse(TbGrade.Text.ToString()); // Вторая колонка в строке
+        int value3 = int.Parse(TbSubject.Text.ToString()); // Первая колонка в строке
+        int primaryKeyValue = int.Parse(selectedRow["id"].ToString() ?? string.Empty);
 
         // Создаем параметры для запроса
         SqlParameter[] parameters = new SqlParameter[]
@@ -76,8 +73,6 @@ public partial class Window_Students : Window
             new SqlParameter("@param1", value1),
             new SqlParameter("@param2", value2),
             new SqlParameter("@param3", value3),
-            new SqlParameter("@param4", value4),
-            new SqlParameter("@param5", value5),
             new SqlParameter("@primaryKeyValue",
                 primaryKeyValue)
         };
@@ -90,23 +85,19 @@ public partial class Window_Students : Window
         Dg.ItemsSource = dataTable.DefaultView;
     }
 
-    private void Dg_OnSelected(object sender, RoutedEventArgs e)
+    private void Dg_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         DataRowView selectedRow = (DataRowView)Dg.SelectedItem;
         if (selectedRow != null)
         {
-            TbFirstName.Text = selectedRow["first_name"].ToString() ?? string.Empty;
+            TbStudent.Text = selectedRow["student_id"].ToString() ?? string.Empty;
 
-            TbSecondName.Text = selectedRow["second_name"].ToString() ?? string.Empty;
+            TbGrade.Text = selectedRow["grade"].ToString() ?? string.Empty;
 
-            TbPatronymic.Text = selectedRow["patronymic"].ToString() ?? string.Empty;
-
-            TbAddress.Text = selectedRow["adress"].ToString() ?? string.Empty;
-
-            TbSubject.Text = selectedRow["subjects_id"].ToString() ?? string.Empty;
+            TbSubject.Text = selectedRow["subject_id"].ToString() ?? string.Empty;
         }
     }
-    
+
     private void CbSubject_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         string? selectedCourse = CbSubject.SelectedItem.ToString();
@@ -114,6 +105,31 @@ public partial class Window_Students : Window
         TbSubject.Text = subjectId.ToString();
     }
 
+    private void CbStudent_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        string selectedStudent = CbStudent.SelectedItem.ToString() ?? string.Empty;
+        int studentId = _conn.GetStudentId(selectedStudent);
+        TbStudent.Text = studentId.ToString();
+    }
+
+    private void TbStudent_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        int selectedId = Convert.ToInt32(TbStudent.Text);
+        string? courseName = _conn.GetSubjectsName(selectedId, "Students", "second_name");
+        foreach (var item in CbStudent.Items)
+        {
+            // Преобразуем элемент в строку
+            string? itemText = item.ToString();
+
+            // Проверяем, содержит ли текст элемента искомое слово
+            if (courseName != null && itemText != null && itemText.Contains(courseName))
+            {
+                // Если да, выделяем элемент и выходим из цикла
+                CbStudent.SelectedItem = item;
+                break;
+            }
+        }
+    }
 
     private void TbSubject_OnTextChanged(object sender, TextChangedEventArgs e)
     {
@@ -155,12 +171,5 @@ public partial class Window_Students : Window
     {
         // Выполняем запрос на очистку таблицы
         _conn.TruncateTable(TruncateQuery);
-    }
-    
-
-    private void MiWindowRating_OnClick(object sender, RoutedEventArgs e)
-    {
-        Window_Ratings window = new Window_Ratings();
-        window.Show();
     }
 }

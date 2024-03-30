@@ -17,7 +17,7 @@
             </MenuItem>
             <MenuItem Header="Window">
                 <MenuItem Header="Window Students" x:Name="miWindowStudents" Click="miWindowStudents_Click"/>
-                <MenuItem Header="Window Ratings"/>
+                <MenuItem Header="Window Ratings" x:Name="MiWindowRating" Click="MiWindowRating_OnClick"/>
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="Tools"/>

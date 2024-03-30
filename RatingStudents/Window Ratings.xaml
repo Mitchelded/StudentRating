@@ -1,23 +1,23 @@
-<Window x:Class="RatingStudents.Window_Students"
+<Window x:Class="RatingStudents.Window_Ratings"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:RatingStudents"
         mc:Ignorable="d"
-        Title="Window_Students" Height="450" Width="800">
+        Title="Window_Ratings" Height="450" Width="800">
     <Grid>
         <Menu>
             <MenuItem Header="Base">
-                <MenuItem Header="Select" Click="MiSelect_OnClick" Name="MiSelect"/>
+                <MenuItem Header="Select" Name="MiSelect" Click="MiSelect_OnClick"/>
                 <MenuItem Header="Insert" Name="MiInsert" Click="MiInsert_OnClick"/>
                 <MenuItem Header="Update" Name="MiUpdate" Click="MiUpdate_OnClick"/>
                 <MenuItem Header="Delete" Name="MiDelete" Click="MiDelete_OnClick"/>
                 <MenuItem Header="Clear" Name="MiClear" Click="MiClear_OnClick"/>
             </MenuItem>
                 <MenuItem Header="Window">
-                    <MenuItem Header="Window Subjects" x:Name="MiWindowSubject" Click="miWindowSubject_Click"/>
-                    <MenuItem Header="Window Ratings" x:Name="MiWindowRating" Click="MiWindowRating_OnClick"/>
+                    <MenuItem Header="Window Subjects" x:Name="MiWindowSubject" />
+                    <MenuItem Header="Window Ratings" x:Name="MiWindowStudents" />
             </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="Tools"/>
@@ -26,22 +26,20 @@
         </Menu>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="50,0,0,0">
             <StackPanel>
-                <TextBox Width="200" Margin="0,50,0,10" x:Name="TbFirstName"/>
-                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbSecondName"/>
-                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbPatronymic"/>
-                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbAddress"/>
+                <TextBox Width="200" Margin="0,50,0,10" x:Name="TbStudent" TextChanged="TbStudent_OnTextChanged"/>
                 <TextBox Width="200" Margin="0,0,0,10" x:Name="TbSubject" TextChanged="TbSubject_OnTextChanged"/>
-                <ComboBox Name="CbSubject" SelectionChanged="CbSubject_OnSelectionChanged"/>
+                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbGrade" />
+                <ComboBox Name="CbSubject" Margin="0,0,0,10" SelectionChanged="CbSubject_OnSelectionChanged"/>
+                <ComboBox Name="CbStudent" Margin="0,0,0,10" SelectionChanged="CbStudent_OnSelectionChanged"/>
             </StackPanel>
             <StackPanel>
-                <Label Content="First Name" Margin="10,45,0,0"/>
-                <Label Content="Second Name" Margin="10,0,0,0"/>
-                <Label Content="Patronymic" Margin="10,5,0,0"/>
-                <Label Content="Address" Margin="10,0,5,0"/>
+                <Label Content="Student Id" Margin="10,40,0,0"/>
                 <Label Content="Subject Id" Margin="10,5,5,0"/>
+                <Label Content="Grade" Margin="10,5,5,0"/>
                 <Label Content="Subject" Margin="10,5,5,0"/>
+                <Label Content="Student" Margin="10,5,5,0"/>
             </StackPanel>
-            <DataGrid Height="350" Width="430" Margin="10,-50,0,0" Name="Dg" SelectionChanged="Dg_OnSelected"/>
+            <DataGrid Height="350" Width="430" Margin="10,-50,0,0" Name="Dg" SelectionChanged="Dg_OnSelectionChanged"/>
         </StackPanel>
     </Grid>
 </Window>

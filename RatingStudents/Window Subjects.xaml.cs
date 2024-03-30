@@ -32,7 +32,7 @@ namespace RatingStudents
 
         private const string DeleteQuery = "DELETE FROM dbo.Subjects WHERE id = @primaryKeyValue";
 
-        private const string TruncateQuery = "TRUNCATE TABLE dbo.Subjects";
+        private const string TruncateQuery = $"DELETE FROM dbo.Subjects";
         
         private readonly ConnectionDb _conn;
         public Window_Subjects()
@@ -146,5 +146,10 @@ namespace RatingStudents
         }
 
 
+        private void MiWindowRating_OnClick(object sender, RoutedEventArgs e)
+        {
+            Window_Ratings window = new Window_Ratings();
+            window.Show();
+        }
     }
 }

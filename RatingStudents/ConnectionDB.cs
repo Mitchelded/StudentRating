@@ -107,25 +107,68 @@ public class ConnectionDb
     }
     
     
-    public List<string?> FillComboBox(string selectQuery)
+    public List<string?> FillComboBoxSubjects(string selectQuery)
     {
-        // Получаем данные из базы данных
-        DataTable dataTable = GetDataTable(selectQuery);
-
         // Создаем список для хранения значений course_name
         List<string?> courseNames = new List<string?>();
 
-        // Добавляем каждое значение course_name в список
-        foreach (DataRow row in dataTable.Rows)
+        try
         {
-            string? courseName = row["course_name"].ToString();
-            courseNames.Add(courseName);
+            // Получаем данные из базы данных
+            using (DataTable dataTable = GetDataTable(selectQuery))
+            {
+                // Добавляем каждое значение course_name в список
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    // Получаем значение course_name и проверяем на null
+                    object courseNameObject = row["course_name"];
+                    string? courseName = courseNameObject != DBNull.Value ? courseNameObject.ToString() : null;
+                    courseNames.Add(courseName);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Обработка исключения
+            Console.WriteLine("Error: " + ex.Message);
+            // Можно выбросить исключение или сделать что-то другое в зависимости от требований
         }
 
         // Возвращаем список значений course_name
         return courseNames;
     }
 
+    public List<string?> FillComboBoxStudents(string selectQuery)
+    {
+        // Создаем список для хранения значений студентов
+        List<string?> studentNames = new List<string?>();
+
+        try
+        {
+            // Получаем данные из базы данных
+            using (DataTable dataTable = GetDataTable(selectQuery))
+            {
+                // Добавляем каждого студента в список
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    // Формируем строку с данными студента
+                    string studentInfo = $"{row["id"]} {row["first_name"]} {row["second_name"]} {row["patronymic"]}";
+                    studentNames.Add(studentInfo);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Обработка исключения
+            Console.WriteLine("Error: " + ex.Message);
+            // Можно выбросить исключение или сделать что-то другое в зависимости от требований
+        }
+
+        // Возвращаем список значений студентов
+        return studentNames;
+    }
+
+    
     private object? ExecuteScalar(string query, params SqlParameter[] parameters)
     {
         using SqlConnection connection = new SqlConnection(ConnectionString);
@@ -145,10 +188,10 @@ public class ConnectionDb
         }
     }
     
-    public int GetSubjectId(string? courseName)
+    public int GetSubjectsId(string? courseName, string table)
     {
         // Запрос для получения id по course_name из таблицы Subjects
-        string selectQuery = "SELECT id FROM dbo.Subjects WHERE course_name = @courseName";
+        string selectQuery = $"SELECT id FROM dbo.{table} WHERE course_name = @courseName";
         using SqlConnection connection = new SqlConnection(ConnectionString);
         // Параметр для передачи значения courseName в запрос
         SqlParameter parameter = new SqlParameter("@courseName", courseName);
@@ -162,29 +205,67 @@ public class ConnectionDb
         return id;
     }
     
-    public string? GetCourseName(int id)
+    public int GetStudentId(string studentInfo)
     {
-        using (SqlConnection connection = new SqlConnection(ConnectionString))
+        // Разделить строку на части, используя пробел в качестве разделителя
+        string[] parts = studentInfo.Split(' ');
+
+        // Проверить, что строка содержит необходимое количество частей
+        if (parts.Length != 4)
         {
-            string query = "SELECT course_name FROM dbo.Subjects WHERE id = @id";
+            return -1; // Возвращаем -1, если строка имеет неверный формат
+        }
 
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@id", id);
+        // Получаем значения id, first_name, second_name и patronymic из разделенных частей
+        string id = parts[0];
+        string firstName = parts[1];
+        string secondName = parts[2];
+        string patronymic = parts[3];
 
-            try
+        // Запрос для получения id студента
+        string selectQuery = $"SELECT id FROM dbo.Students WHERE id = @id AND first_name = @firstName AND second_name = @secondName AND patronymic = @patronymic";
+
+        using SqlConnection connection = new SqlConnection(ConnectionString);
+        // Параметры для передачи значений в запрос
+        SqlParameter[] parameters = new SqlParameter[]
+        {
+            new SqlParameter("@id", id),
+            new SqlParameter("@firstName", firstName),
+            new SqlParameter("@secondName", secondName),
+            new SqlParameter("@patronymic", patronymic)
+        };
+
+        // Получаем id из базы данных
+        object? result = ExecuteScalar(selectQuery, parameters);
+
+        // Проверяем, что результат не является null и преобразуем его в int
+        int studentId = result != null ? Convert.ToInt32(result) : -1; // Если результат null, вернем -1
+
+        return studentId;
+    }
+
+    
+    public string? GetSubjectsName(int id, string table, string column)
+    {
+        using SqlConnection connection = new SqlConnection(ConnectionString);
+        string query = $"SELECT {column} FROM dbo.{table} WHERE id = @id";
+
+        SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@id", id);
+
+        try
+        {
+            connection.Open();
+            var result = command.ExecuteScalar();
+            if (result != null && result != DBNull.Value)
             {
-                connection.Open();
-                var result = command.ExecuteScalar();
-                if (result != null && result != DBNull.Value)
-                {
-                    return result.ToString();
-                }
+                return result.ToString();
             }
-            catch (Exception ex)
-            {
-                // Обработка исключения
-                Console.WriteLine("Error: " + ex.Message);
-            }
+        }
+        catch (Exception ex)
+        {
+            // Обработка исключения
+            Console.WriteLine("Error: " + ex.Message);
         }
 
         return null; // Возвращаем null, если что-то пошло не так или запись не найдена
