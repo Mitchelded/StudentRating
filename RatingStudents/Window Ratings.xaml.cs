@@ -2,6 +2,7 @@ using System.Windows;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace RatingStudents;
 
@@ -22,11 +23,10 @@ public partial class Window_Ratings : Window
 
     private const string TruncateQuery = $"DELETE FROM dbo.Ratings";
     
-    private const string SelectComboBoxQuerySubjects = "SELECT course_name FROM dbo.Subjects";
+    private const string SelectComboBoxQuerySubjects = "SELECT id, course_name FROM dbo.Subjects";
     private const string SelectComboBoxQueryStudents = "SELECT id, first_name, second_name, patronymic FROM dbo.Students;";
 
     private readonly ConnectionDb _conn;
-    
     
     public Window_Ratings()
     {
@@ -42,6 +42,7 @@ public partial class Window_Ratings : Window
     {
         DataTable dataTable = _conn.GetDataTable(SelectQuery);
         Dg.ItemsSource = dataTable.DefaultView;
+        
     }
 
 
@@ -57,14 +58,15 @@ public partial class Window_Ratings : Window
         };
 
         _conn.InsertData(InsertQuery, sqlParameters);
+        
     }
 
     private void MiUpdate_OnClick(object sender, RoutedEventArgs e)
     {
         DataRowView selectedRow = (DataRowView)Dg.SelectedItem;
-        int value1 = int.Parse(TbStudent.Text.ToString()); // Первая колонка в строке
-        decimal value2 =  decimal.Parse(TbGrade.Text.ToString()); // Вторая колонка в строке
-        int value3 = int.Parse(TbSubject.Text.ToString()); // Первая колонка в строке
+        int value1 = int.Parse(TbStudent.Text); // Первая колонка в строке
+        decimal value2 =  decimal.Parse(TbGrade.Text); // Вторая колонка в строке
+        int value3 = int.Parse(TbSubject.Text); // Первая колонка в строке
         int primaryKeyValue = int.Parse(selectedRow["id"].ToString() ?? string.Empty);
 
         // Создаем параметры для запроса
@@ -83,6 +85,7 @@ public partial class Window_Ratings : Window
         // Обновляем данные в DataGrid
         DataTable dataTable = _conn.GetDataTable(SelectQuery);
         Dg.ItemsSource = dataTable.DefaultView;
+        
     }
 
     private void Dg_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -101,7 +104,8 @@ public partial class Window_Ratings : Window
     private void CbSubject_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         string? selectedCourse = CbSubject.SelectedItem.ToString();
-        int subjectId = _conn.GetSubjectsId(selectedCourse, "Subjects");
+        
+        int subjectId = _conn.GetSubjectsId(selectedCourse.Split(" ")[0], "Subjects");
         TbSubject.Text = subjectId.ToString();
     }
 
@@ -146,7 +150,7 @@ public partial class Window_Ratings : Window
         DataRowView selectedRow = (DataRowView)Dg.SelectedItem;
         if (selectedRow != null)
         {
-            int primaryKeyValue = int.Parse(selectedRow["id"].ToString());
+            int primaryKeyValue = int.Parse(selectedRow["id"].ToString() ?? string.Empty);
 
             // Создаем параметры для запроса
             SqlParameter[] parameters = new SqlParameter[]
@@ -160,6 +164,7 @@ public partial class Window_Ratings : Window
             // Обновляем данные в DataGrid
             DataTable dataTable = _conn.GetDataTable(SelectQuery);
             Dg.ItemsSource = dataTable.DefaultView;
+            
         }
         else
         {
@@ -171,5 +176,20 @@ public partial class Window_Ratings : Window
     {
         // Выполняем запрос на очистку таблицы
         _conn.TruncateTable(TruncateQuery);
+        
+    }
+
+    private void CbSubject_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        CbSubject.Items.Clear();
+        CbStudent.Items.Clear();
+        CbSubject.ItemsSource = _conn.FillComboBoxSubjects(SelectComboBoxQuerySubjects);
+        CbStudent.ItemsSource = _conn.FillComboBoxStudents(SelectComboBoxQueryStudents);
+    }
+
+    private void CbSubject_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        CbSubject.ItemsSource = _conn.FillComboBoxSubjects(SelectComboBoxQuerySubjects);
+        CbStudent.ItemsSource = _conn.FillComboBoxStudents(SelectComboBoxQueryStudents);
     }
 }

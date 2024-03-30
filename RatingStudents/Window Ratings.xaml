@@ -29,8 +29,8 @@
                 <TextBox Width="200" Margin="0,50,0,10" x:Name="TbStudent" TextChanged="TbStudent_OnTextChanged"/>
                 <TextBox Width="200" Margin="0,0,0,10" x:Name="TbSubject" TextChanged="TbSubject_OnTextChanged"/>
                 <TextBox Width="200" Margin="0,0,0,10" x:Name="TbGrade" />
-                <ComboBox Name="CbSubject" Margin="0,0,0,10" SelectionChanged="CbSubject_OnSelectionChanged"/>
-                <ComboBox Name="CbStudent" Margin="0,0,0,10" SelectionChanged="CbStudent_OnSelectionChanged"/>
+                <ComboBox Name="CbSubject" Margin="0,0,0,10" SelectionChanged="CbSubject_OnSelectionChanged"  MouseLeftButtonDown="CbSubject_OnMouseLeftButtonDown" PreviewMouseDown="CbSubject_OnPreviewMouseDown"/>
+                <ComboBox Name="CbStudent" Margin="0,0,0,10" SelectionChanged="CbStudent_OnSelectionChanged" MouseLeftButtonDown="CbSubject_OnMouseLeftButtonDown" PreviewMouseDown="CbSubject_OnPreviewMouseDown"/>
             </StackPanel>
             <StackPanel>
                 <Label Content="Student Id" Margin="10,40,0,0"/>

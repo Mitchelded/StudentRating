@@ -115,16 +115,15 @@ public class ConnectionDb
         try
         {
             // Получаем данные из базы данных
-            using (DataTable dataTable = GetDataTable(selectQuery))
+            using DataTable dataTable = GetDataTable(selectQuery);
+            // Добавляем каждое значение course_name в список
+            foreach (DataRow row in dataTable.Rows)
             {
-                // Добавляем каждое значение course_name в список
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    // Получаем значение course_name и проверяем на null
-                    object courseNameObject = row["course_name"];
-                    string? courseName = courseNameObject != DBNull.Value ? courseNameObject.ToString() : null;
-                    courseNames.Add(courseName);
-                }
+                    
+                // Получаем значение course_name и проверяем на null
+                object courseNameInfo = $"{row["id"]} {row["course_name"]}";
+                string? courseName = courseNameInfo != DBNull.Value ? courseNameInfo.ToString() : null;
+                courseNames.Add(courseName);
             }
         }
         catch (Exception ex)
@@ -146,15 +145,13 @@ public class ConnectionDb
         try
         {
             // Получаем данные из базы данных
-            using (DataTable dataTable = GetDataTable(selectQuery))
-            {
-                // Добавляем каждого студента в список
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    // Формируем строку с данными студента
-                    string studentInfo = $"{row["id"]} {row["first_name"]} {row["second_name"]} {row["patronymic"]}";
-                    studentNames.Add(studentInfo);
-                }
+            using DataTable dataTable = GetDataTable(selectQuery);
+            // Добавляем каждого студента в список
+            foreach (DataRow row in dataTable.Rows)
+            {   
+                // Формируем строку с данными студента
+                string studentInfo = $"{row["id"]} {row["first_name"]} {row["second_name"]} {row["patronymic"]}";
+                studentNames.Add(studentInfo);
             }
         }
         catch (Exception ex)
@@ -191,7 +188,7 @@ public class ConnectionDb
     public int GetSubjectsId(string? courseName, string table)
     {
         // Запрос для получения id по course_name из таблицы Subjects
-        string selectQuery = $"SELECT id FROM dbo.{table} WHERE course_name = @courseName";
+        string selectQuery = $"SELECT id FROM dbo.{table} WHERE id = @courseName";
         using SqlConnection connection = new SqlConnection(ConnectionString);
         // Параметр для передачи значения courseName в запрос
         SqlParameter parameter = new SqlParameter("@courseName", courseName);
@@ -223,7 +220,7 @@ public class ConnectionDb
         string patronymic = parts[3];
 
         // Запрос для получения id студента
-        string selectQuery = $"SELECT id FROM dbo.Students WHERE id = @id AND first_name = @firstName AND second_name = @secondName AND patronymic = @patronymic";
+        string selectQuery = $"SELECT id FROM dbo.Students WHERE id = @id";
 
         using SqlConnection connection = new SqlConnection(ConnectionString);
         // Параметры для передачи значений в запрос

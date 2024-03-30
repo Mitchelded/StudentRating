@@ -7,12 +7,13 @@ namespace RatingStudents;
 
 public partial class Window_Students : Window
 {
+
     private const string SelectQuery = "SELECT Students.* FROM dbo.Students";
 
     private const string InsertQuery = "INSERT INTO dbo.Students VALUES (@param1, @param2, @param3, @param4)";
 
-    private const string UpdateQuery = "UPDATE dbo.Students SET first_name = @param1, second_name = @param2 " +
-                                       "patronymic = @param3, adress = @param4" +
+    private const string UpdateQuery = "UPDATE dbo.Students SET first_name = @param1, second_name = @param2, " +
+                                       "patronymic = @param3, adress = @param4 " +
                                        "WHERE id = @primaryKeyValue";
 
     private const string DeleteQuery = "DELETE FROM dbo.Students WHERE id = @primaryKeyValue";
@@ -29,6 +30,7 @@ public partial class Window_Students : Window
         _conn = new ConnectionDb();
         DataTable dataTable = _conn.GetDataTable(SelectQuery);
         Dg.ItemsSource = dataTable.DefaultView;
+        
     }
 
     private void miWindowSubject_Click(object sender, RoutedEventArgs e)
@@ -87,6 +89,7 @@ public partial class Window_Students : Window
         DataTable dataTable = _conn.GetDataTable(SelectQuery);
         Dg.ItemsSource = dataTable.DefaultView;
     }
+
 
     private void Dg_OnSelected(object sender, RoutedEventArgs e)
     {
@@ -147,8 +150,8 @@ public partial class Window_Students : Window
 
     private void MiWindowRatings_Click(object sender, RoutedEventArgs e)
     {
-        //Window_Ratings window = new Window_Ratings();
-        //window.Show();
+        Window_Ratings window = new Window_Ratings();
+        window.Show();
     }
 
     private void MiTools_Click(object sender, RoutedEventArgs e)
