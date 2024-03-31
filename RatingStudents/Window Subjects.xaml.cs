@@ -28,9 +28,9 @@ namespace RatingStudents
 
         private const string UpdateQuery = "UPDATE dbo.Subjects SET course_name = @param1, description = @param2, " +
                                            "duration = @param3, instructor = @param4 " +
-                                           "WHERE id = @primaryKeyValue";
+                                           "WHERE subject_id = @primaryKeyValue";
 
-        private const string DeleteQuery = "DELETE FROM dbo.Subjects WHERE id = @primaryKeyValue";
+        private const string DeleteQuery = "DELETE FROM dbo.Subjects WHERE subject_id = @primaryKeyValue";
         private const string DeleteQueryChild = "DELETE FROM dbo.Ratings WHERE subject_id = @primaryKeyValue";
 
         private const string TruncateQuery = "Delete From dbo.Subjects";
@@ -47,8 +47,19 @@ namespace RatingStudents
 
         private void miWindowStudents_Click(object sender, RoutedEventArgs e)
         {
-            Window_Students window = new Window_Students();
-            window.Show();
+            // Проверяем, открыто ли уже окно Window_Students
+            if (Application.Current.Windows.OfType<Window_Students>().Any())
+            {
+                // Окно уже открыто, необходимо активировать его
+                Window_Students window = Application.Current.Windows.OfType<Window_Students>().First();
+                window.Activate();
+            }
+            else
+            {
+                // Окно еще не открыто, создаем новый экземпляр и открываем его
+                Window_Students window = new Window_Students();
+                window.Show();
+            }
         }
 
         private void MiSelect_OnClick(object sender, RoutedEventArgs e)
@@ -78,7 +89,7 @@ namespace RatingStudents
             string value2 = TbDescription.Text; // Вторая колонка в строке
             string value3 = TbDuration.Text; // Третья колонка в строке
             string value4 = TbInstructor.Text; // Четвертая колонка в строке
-            int primaryKeyValue = int.Parse(selectedRow["id"].ToString());
+            int primaryKeyValue = int.Parse(selectedRow["subject_id"].ToString());
 
             // Создаем параметры для запроса
             SqlParameter[] parameters = new SqlParameter[]
@@ -110,7 +121,7 @@ namespace RatingStudents
 
                 TbDuration.Text = selectedRow["duration"].ToString() ?? string.Empty;
 
-                TbInstructor.Text = selectedRow["duration"].ToString() ?? string.Empty;
+                TbInstructor.Text = selectedRow["instructor"].ToString() ?? string.Empty;
                 
             }
         }
@@ -120,7 +131,7 @@ namespace RatingStudents
             DataRowView selectedRow = (DataRowView)Dg.SelectedItem;
             if (selectedRow != null)
             {
-                int primaryKeyValue = int.Parse(selectedRow["id"].ToString());
+                int primaryKeyValue = int.Parse(selectedRow["subject_id"].ToString());
 
                 // Создаем параметры для запроса
                 SqlParameter[] parameters = new SqlParameter[]
@@ -158,8 +169,19 @@ namespace RatingStudents
 
         private void MiWindowRating_OnClick(object sender, RoutedEventArgs e)
         {
-            Window_Ratings window = new();
-            window.Show();
+            // Проверяем, открыто ли уже окно Window_Ratings
+            if (Application.Current.Windows.OfType<Window_Ratings>().Any())
+            {
+                // Окно уже открыто, необходимо активировать его
+                Window_Ratings window = Application.Current.Windows.OfType<Window_Ratings>().First();
+                window.Activate();
+            }
+            else
+            {
+                // Окно еще не открыто, создаем новый экземпляр и открываем его
+                Window_Ratings window = new Window_Ratings();
+                window.Show();
+            }
         }
     }
 }

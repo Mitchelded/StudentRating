@@ -16,8 +16,8 @@
                 <MenuItem Header="Clear" Name="MiClear" Click="MiClear_OnClick"/>
             </MenuItem>
                 <MenuItem Header="Window">
-                    <MenuItem Header="Window Subjects" x:Name="MiWindowSubject" />
-                    <MenuItem Header="Window Ratings" x:Name="MiWindowStudents" />
+                    <MenuItem Header="Window Subjects" x:Name="MiWindowSubject" Click="MiWindowSubject_OnClick"/>
+                    <MenuItem Header="Window Ratings" x:Name="MiWindowStudents" Click="MiWindowStudents_OnClick"/>
             </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="Tools"/>

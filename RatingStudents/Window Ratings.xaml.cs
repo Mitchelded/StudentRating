@@ -10,21 +10,21 @@ public partial class Window_Ratings : Window
 {
     private const string SelectQuery = "SELECT dbo.Ratings.*, Students.first_name + ' ' + Students.second_name + ' ' + " +
                                        "Students.patronymic AS full_name, Subjects.course_name FROM dbo.Ratings " +
-                                       "INNER JOIN Students ON dbo.Ratings.student_id = Students.id " +
-                                       "INNER JOIN Subjects ON dbo.Ratings.subject_id = Subjects.id;";
+                                       "INNER JOIN Students ON dbo.Ratings.student_id = Students.student_id " +
+                                       "INNER JOIN Subjects ON dbo.Ratings.subject_id = Subjects.subject_id;";
 
     private const string InsertQuery = "INSERT INTO dbo.Ratings VALUES (@param1, @param2, @param3)";
 
     private const string UpdateQuery = "UPDATE dbo.Ratings SET student_id = @param1, grade = @param2, " +
                                        "student_id = @param3 " +
-                                       "WHERE id = @primaryKeyValue";
+                                       "WHERE ratings_id = @primaryKeyValue";
 
-    private const string DeleteQuery = "DELETE FROM dbo.Ratings WHERE id = @primaryKeyValue";
+    private const string DeleteQuery = "DELETE FROM dbo.Ratings WHERE ratings_id = @primaryKeyValue";
 
     private const string TruncateQuery = $"DELETE FROM dbo.Ratings";
     
-    private const string SelectComboBoxQuerySubjects = "SELECT id, course_name FROM dbo.Subjects";
-    private const string SelectComboBoxQueryStudents = "SELECT id, first_name, second_name, patronymic FROM dbo.Students;";
+    private const string SelectComboBoxQuerySubjects = "SELECT subject_id, course_name FROM dbo.Subjects";
+    private const string SelectComboBoxQueryStudents = "SELECT student_id, first_name, second_name, patronymic FROM dbo.Students;";
 
     private readonly ConnectionDb _conn;
     
@@ -67,7 +67,7 @@ public partial class Window_Ratings : Window
         int value1 = int.Parse(TbStudent.Text); // Первая колонка в строке
         decimal value2 =  decimal.Parse(TbGrade.Text); // Вторая колонка в строке
         int value3 = int.Parse(TbSubject.Text); // Первая колонка в строке
-        int primaryKeyValue = int.Parse(selectedRow["id"].ToString() ?? string.Empty);
+        int primaryKeyValue = int.Parse(selectedRow["ratings_id"].ToString() ?? string.Empty);
 
         // Создаем параметры для запроса
         SqlParameter[] parameters = new SqlParameter[]
@@ -119,7 +119,7 @@ public partial class Window_Ratings : Window
     private void TbStudent_OnTextChanged(object sender, TextChangedEventArgs e)
     {
         int selectedId = Convert.ToInt32(TbStudent.Text);
-        string? courseName = _conn.GetSubjectsName(selectedId, "Students", "second_name");
+        string? courseName = _conn.GetSubjectsName(selectedId, "Students", "second_name", "student_id");
         foreach (var item in CbStudent.Items)
         {
             // Преобразуем элемент в строку
@@ -138,7 +138,7 @@ public partial class Window_Ratings : Window
     private void TbSubject_OnTextChanged(object sender, TextChangedEventArgs e)
     {
         int selectedId = Convert.ToInt32(TbSubject.Text);
-        string? courseName = _conn.GetSubjectsName(selectedId, "Subjects", "course_name");
+        string? courseName = _conn.GetSubjectsName(selectedId, "Subjects", "course_name", "subject_id");
         if (!string.IsNullOrEmpty(courseName))
         {
             CbSubject.SelectedItem = courseName;
@@ -150,7 +150,7 @@ public partial class Window_Ratings : Window
         DataRowView selectedRow = (DataRowView)Dg.SelectedItem;
         if (selectedRow != null)
         {
-            int primaryKeyValue = int.Parse(selectedRow["id"].ToString() ?? string.Empty);
+            int primaryKeyValue = int.Parse(selectedRow["ratings_id"].ToString() ?? string.Empty);
 
             // Создаем параметры для запроса
             SqlParameter[] parameters = new SqlParameter[]
@@ -191,5 +191,39 @@ public partial class Window_Ratings : Window
     {
         CbSubject.ItemsSource = _conn.FillComboBoxSubjects(SelectComboBoxQuerySubjects);
         CbStudent.ItemsSource = _conn.FillComboBoxStudents(SelectComboBoxQueryStudents);
+    }
+
+    private void MiWindowSubject_OnClick(object sender, RoutedEventArgs e)
+    {
+        // Проверяем, открыто ли уже окно Window_Subjects
+        if (Application.Current.Windows.OfType<Window_Subjects>().Any())
+        {
+            // Окно уже открыто, необходимо активировать его
+            Window_Subjects window = Application.Current.Windows.OfType<Window_Subjects>().First();
+            window.Activate();
+        }
+        else
+        {
+            // Окно еще не открыто, создаем новый экземпляр и открываем его
+            Window_Subjects window = new Window_Subjects();
+            window.Show();
+        }
+    }
+
+    private void MiWindowStudents_OnClick(object sender, RoutedEventArgs e)
+    {
+        // Проверяем, открыто ли уже окно Window_Students
+        if (Application.Current.Windows.OfType<Window_Students>().Any())
+        {
+            // Окно уже открыто, необходимо активировать его
+            Window_Students window = Application.Current.Windows.OfType<Window_Students>().First();
+            window.Activate();
+        }
+        else
+        {
+            // Окно еще не открыто, создаем новый экземпляр и открываем его
+            Window_Students window = new Window_Students();
+            window.Show();
+        }
     }
 }

@@ -47,7 +47,7 @@ public class ConnectionDb
         catch (Exception ex)
         {
             // Обработка исключения
-            Console.WriteLine("Error: " + ex.Message);
+            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
     
@@ -66,7 +66,7 @@ public class ConnectionDb
         catch (Exception ex)
         {
             // Обработка исключения
-            Console.WriteLine("Error: " + ex.Message);
+            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
     
@@ -85,7 +85,7 @@ public class ConnectionDb
         catch (Exception ex)
         {
             // Обработка исключения
-            Console.WriteLine("Error: " + ex.Message);
+            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
     
@@ -102,7 +102,7 @@ public class ConnectionDb
         catch (Exception ex)
         {
             // Обработка исключения
-            Console.WriteLine("Error: " + ex.Message);
+            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
     
@@ -121,7 +121,7 @@ public class ConnectionDb
             {
                     
                 // Получаем значение course_name и проверяем на null
-                object courseNameInfo = $"{row["id"]} {row["course_name"]}";
+                object courseNameInfo = $"{row["subject_id"]} {row["course_name"]}";
                 string? courseName = courseNameInfo != DBNull.Value ? courseNameInfo.ToString() : null;
                 courseNames.Add(courseName);
             }
@@ -129,7 +129,7 @@ public class ConnectionDb
         catch (Exception ex)
         {
             // Обработка исключения
-            Console.WriteLine("Error: " + ex.Message);
+            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             // Можно выбросить исключение или сделать что-то другое в зависимости от требований
         }
 
@@ -150,14 +150,14 @@ public class ConnectionDb
             foreach (DataRow row in dataTable.Rows)
             {   
                 // Формируем строку с данными студента
-                string studentInfo = $"{row["id"]} {row["first_name"]} {row["second_name"]} {row["patronymic"]}";
+                string studentInfo = $"{row["student_id"]} {row["first_name"]} {row["second_name"]} {row["patronymic"]}";
                 studentNames.Add(studentInfo);
             }
         }
         catch (Exception ex)
         {
             // Обработка исключения
-            Console.WriteLine("Error: " + ex.Message);
+            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             // Можно выбросить исключение или сделать что-то другое в зависимости от требований
         }
 
@@ -180,7 +180,7 @@ public class ConnectionDb
         catch (Exception ex)
         {
             // Обработка исключения
-            Console.WriteLine("Error: " + ex.Message);
+            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return null;
         }
     }
@@ -188,7 +188,7 @@ public class ConnectionDb
     public int GetSubjectsId(string? courseName, string table)
     {
         // Запрос для получения id по course_name из таблицы Subjects
-        string selectQuery = $"SELECT id FROM dbo.{table} WHERE id = @courseName";
+        string selectQuery = $"SELECT subject_id FROM dbo.{table} WHERE subject_id = @courseName";
         using SqlConnection connection = new SqlConnection(ConnectionString);
         // Параметр для передачи значения courseName в запрос
         SqlParameter parameter = new SqlParameter("@courseName", courseName);
@@ -220,7 +220,7 @@ public class ConnectionDb
         string patronymic = parts[3];
 
         // Запрос для получения id студента
-        string selectQuery = $"SELECT id FROM dbo.Students WHERE id = @id";
+        string selectQuery = $"SELECT student_id FROM dbo.Students WHERE student_id = @id";
 
         using SqlConnection connection = new SqlConnection(ConnectionString);
         // Параметры для передачи значений в запрос
@@ -242,10 +242,10 @@ public class ConnectionDb
     }
 
     
-    public string? GetSubjectsName(int id, string table, string column)
+    public string? GetSubjectsName(int id, string table, string column, string id_name)
     {
         using SqlConnection connection = new SqlConnection(ConnectionString);
-        string query = $"SELECT {column} FROM dbo.{table} WHERE id = @id";
+        string query = $"SELECT {column} FROM dbo.{table} WHERE {id_name} = @id";
 
         SqlCommand command = new SqlCommand(query, connection);
         command.Parameters.AddWithValue("@id", id);
@@ -262,7 +262,7 @@ public class ConnectionDb
         catch (Exception ex)
         {
             // Обработка исключения
-            Console.WriteLine("Error: " + ex.Message);
+            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         return null; // Возвращаем null, если что-то пошло не так или запись не найдена
