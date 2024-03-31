@@ -17,9 +17,9 @@ public partial class Window_Ratings : Window
 
     private const string UpdateQuery = "UPDATE dbo.Ratings SET student_id = @param1, grade = @param2, " +
                                        "student_id = @param3 " +
-                                       "WHERE ratings_id = @primaryKeyValue";
+                                       "WHERE rating_id = @primaryKeyValue";
 
-    private const string DeleteQuery = "DELETE FROM dbo.Ratings WHERE ratings_id = @primaryKeyValue";
+    private const string DeleteQuery = "DELETE FROM dbo.Ratings WHERE rating_id = @primaryKeyValue";
 
     private const string TruncateQuery = $"DELETE FROM dbo.Ratings";
     
@@ -67,7 +67,7 @@ public partial class Window_Ratings : Window
         int value1 = int.Parse(TbStudent.Text); // Первая колонка в строке
         decimal value2 =  decimal.Parse(TbGrade.Text); // Вторая колонка в строке
         int value3 = int.Parse(TbSubject.Text); // Первая колонка в строке
-        int primaryKeyValue = int.Parse(selectedRow["ratings_id"].ToString() ?? string.Empty);
+        int primaryKeyValue = int.Parse(selectedRow["rating_id"].ToString() ?? string.Empty);
 
         // Создаем параметры для запроса
         SqlParameter[] parameters = new SqlParameter[]
@@ -150,7 +150,7 @@ public partial class Window_Ratings : Window
         DataRowView selectedRow = (DataRowView)Dg.SelectedItem;
         if (selectedRow != null)
         {
-            int primaryKeyValue = int.Parse(selectedRow["ratings_id"].ToString() ?? string.Empty);
+            int primaryKeyValue = int.Parse(selectedRow["rating_id"].ToString() ?? string.Empty);
 
             // Создаем параметры для запроса
             SqlParameter[] parameters = new SqlParameter[]
