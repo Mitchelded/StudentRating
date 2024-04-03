@@ -23,157 +23,213 @@ public partial class Window_Students : Window
 
     private readonly ConnectionDb _conn;
 
-    // private readonly Window_Ratings _windowRatings;
-    // private readonly Window_Subjects _windowSubjects;
-    // private readonly Window_Students _windowStudents;
     public Window_Students()
     {
         InitializeComponent();
-        // this._windowRatings = windowRatings;
-        // this._windowSubjects = windowSubjects;
-        // this._windowStudents = windowStudents;
-        _conn = new ConnectionDb();
-        DataTable dataTable = _conn.GetDataTable(SelectQuery);
-        Dg.ItemsSource = dataTable.DefaultView;
+        try
+        {
+            _conn = new ConnectionDb();
+            DataTable dataTable = _conn.GetDataTable(SelectQuery);
+            Dg.ItemsSource = dataTable.DefaultView;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     private void miWindowSubject_Click(object sender, RoutedEventArgs e)
     {
-        
-        
-        if (Application.Current.Windows.OfType<Window_Subjects>().Any())
+        try
         {
-            WindowManager.windowSubjects.Show();
+            if (Application.Current.Windows.OfType<Window_Subjects>().Any())
+            {
+                WindowManager.windowSubjects.Show();
+            }
+            else
+            {
+                Window_Subjects windowSubjects = new Window_Subjects();
+                WindowManager.windowSubjects = windowSubjects;
+                WindowManager.windowSubjects.Show();
+            }
+
+            WindowManager.SubjectsManagerWindow("Open");
         }
-        else
+        catch (Exception ex)
         {
-            Window_Subjects windowSubjects = new Window_Subjects();
-            WindowManager.windowSubjects = windowSubjects;
-            WindowManager.windowSubjects.Show();
+            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-        WindowManager.SubjectsManagerWindow("Open");
     }
 
     private void MiSelect_OnClick(object sender, RoutedEventArgs e)
     {
-        DataTable dataTable = _conn.GetDataTable(SelectQuery);
-        Dg.ItemsSource = dataTable.DefaultView;
+        try
+        {
+            DataTable dataTable = _conn.GetDataTable(SelectQuery);
+            Dg.ItemsSource = dataTable.DefaultView;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     private void MiInsert_OnClick(object sender, RoutedEventArgs e)
     {
-        object[] parameters =
-            { TbFirstName.Text, TbSecondName.Text, TbPatronymic.Text, TbAddress.Text };
-        SqlParameter[] sqlParameters = new SqlParameter[]
+        try
         {
-            new SqlParameter("@param1", parameters[0]),
-            new SqlParameter("@param2", parameters[1]),
-            new SqlParameter("@param3", parameters[2]),
-            new SqlParameter("@param4", parameters[3])
-        };
+            object[] parameters =
+                { TbFirstName.Text, TbSecondName.Text, TbPatronymic.Text, TbAddress.Text };
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@param1", parameters[0]),
+                new SqlParameter("@param2", parameters[1]),
+                new SqlParameter("@param3", parameters[2]),
+                new SqlParameter("@param4", parameters[3])
+            };
 
-        _conn.InsertData(InsertQuery, sqlParameters);
+            _conn.InsertData(InsertQuery, sqlParameters);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     private void MiUpdate_OnClick(object sender, RoutedEventArgs e)
     {
-        DataRowView selectedRow = (DataRowView)Dg.SelectedItem;
-        string value1 = TbFirstName.Text; // Первая колонка в строке
-        string value2 = TbSecondName.Text; // Вторая колонка в строке
-        string value3 = TbPatronymic.Text; // Третья колонка в строке
-        string value4 = TbAddress.Text; // Четвертая колонка в строке
-        int primaryKeyValue = int.Parse(selectedRow["student_id"].ToString());
-
-        // Создаем параметры для запроса
-        SqlParameter[] parameters = new SqlParameter[]
+        try
         {
-            new SqlParameter("@param1", value1),
-            new SqlParameter("@param2", value2),
-            new SqlParameter("@param3", value3),
-            new SqlParameter("@param4", value4),
-            new SqlParameter("@primaryKeyValue",
-                primaryKeyValue)
-        };
-
-
-        // Выполняем запрос на обновление
-        _conn.UpdateData(UpdateQuery, parameters);
-
-        // Обновляем данные в DataGrid
-        DataTable dataTable = _conn.GetDataTable(SelectQuery);
-        Dg.ItemsSource = dataTable.DefaultView;
-    }
-
-
-    private void Dg_OnSelected(object sender, RoutedEventArgs e)
-    {
-        DataRowView selectedRow = (DataRowView)Dg.SelectedItem;
-        if (selectedRow != null)
-        {
-            TbFirstName.Text = selectedRow["first_name"].ToString() ?? string.Empty;
-
-            TbSecondName.Text = selectedRow["second_name"].ToString() ?? string.Empty;
-
-            TbPatronymic.Text = selectedRow["patronymic"].ToString() ?? string.Empty;
-
-            TbAddress.Text = selectedRow["adress"].ToString() ?? string.Empty;
-        }
-    }
-
-    private void MiDelete_OnClick(object sender, RoutedEventArgs e)
-    {
-        DataRowView selectedRow = (DataRowView)Dg.SelectedItem;
-        if (selectedRow != null)
-        {
+            DataRowView selectedRow = (DataRowView)Dg.SelectedItem;
+            string value1 = TbFirstName.Text; // Первая колонка в строке
+            string value2 = TbSecondName.Text; // Вторая колонка в строке
+            string value3 = TbPatronymic.Text; // Третья колонка в строке
+            string value4 = TbAddress.Text; // Четвертая колонка в строке
             int primaryKeyValue = int.Parse(selectedRow["student_id"].ToString());
 
             // Создаем параметры для запроса
             SqlParameter[] parameters = new SqlParameter[]
             {
-                new SqlParameter("@primaryKeyValue", primaryKeyValue)
+                new SqlParameter("@param1", value1),
+                new SqlParameter("@param2", value2),
+                new SqlParameter("@param3", value3),
+                new SqlParameter("@param4", value4),
+                new SqlParameter("@primaryKeyValue",
+                    primaryKeyValue)
             };
 
-            SqlParameter[] parameters2 = new SqlParameter[]
-            {
-                new SqlParameter("@primaryKeyValue", primaryKeyValue)
-            };
 
-            _conn.DeleteData(DeleteQueryChild, parameters2);
-
-            // Выполняем запрос на удаление
-            _conn.DeleteData(DeleteQuery, parameters);
+            // Выполняем запрос на обновление
+            _conn.UpdateData(UpdateQuery, parameters);
 
             // Обновляем данные в DataGrid
             DataTable dataTable = _conn.GetDataTable(SelectQuery);
             Dg.ItemsSource = dataTable.DefaultView;
         }
-        else
+        catch (Exception ex)
         {
-            MessageBox.Show("Выберите строку для удаления.");
+            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+
+    private void Dg_OnSelected(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            DataRowView selectedRow = (DataRowView)Dg.SelectedItem;
+            if (selectedRow != null)
+            {
+                TbFirstName.Text = selectedRow["first_name"].ToString() ?? string.Empty;
+
+                TbSecondName.Text = selectedRow["second_name"].ToString() ?? string.Empty;
+
+                TbPatronymic.Text = selectedRow["patronymic"].ToString() ?? string.Empty;
+
+                TbAddress.Text = selectedRow["adress"].ToString() ?? string.Empty;
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void MiDelete_OnClick(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            DataRowView selectedRow = (DataRowView)Dg.SelectedItem;
+            if (selectedRow != null)
+            {
+                int primaryKeyValue = int.Parse(selectedRow["student_id"].ToString());
+
+                // Создаем параметры для запроса
+                SqlParameter[] parameters = new SqlParameter[]
+                {
+                    new SqlParameter("@primaryKeyValue", primaryKeyValue)
+                };
+
+                SqlParameter[] parameters2 = new SqlParameter[]
+                {
+                    new SqlParameter("@primaryKeyValue", primaryKeyValue)
+                };
+
+                _conn.DeleteData(DeleteQueryChild, parameters2);
+
+                // Выполняем запрос на удаление
+                _conn.DeleteData(DeleteQuery, parameters);
+
+                // Обновляем данные в DataGrid
+                DataTable dataTable = _conn.GetDataTable(SelectQuery);
+                Dg.ItemsSource = dataTable.DefaultView;
+            }
+            else
+            {
+                MessageBox.Show("Выберите строку для удаления.");
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
     private void MiClear_OnClick(object sender, RoutedEventArgs e)
     {
-        // Выполняем запрос на очистку таблицы
-        Dg.ItemsSource = null;
+        try
+        {
+            // Выполняем запрос на очистку таблицы
+            Dg.ItemsSource = null;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
 
     private void MiWindowRatings_Click(object sender, RoutedEventArgs e)
     {
-        if (Application.Current.Windows.OfType<Window_Ratings>().Any())
+        try
         {
-            WindowManager.windowRatings.Show();
-        }
-        else
-        {
-            Window_Ratings windowRatings = new Window_Ratings();
-            WindowManager.windowRatings = windowRatings;
-            WindowManager.windowRatings.Show();
-        }
+            if (Application.Current.Windows.OfType<Window_Ratings>().Any())
+            {
+                WindowManager.windowRatings.Show();
+            }
+            else
+            {
+                Window_Ratings windowRatings = new Window_Ratings();
+                WindowManager.windowRatings = windowRatings;
+                WindowManager.windowRatings.Show();
+            }
 
-        WindowManager.RatingsManagerWindow("Open");
+            WindowManager.RatingsManagerWindow("Open");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     private void MiTools_Click(object sender, RoutedEventArgs e)
@@ -190,6 +246,13 @@ public partial class Window_Students : Window
 
     private void Window_Students_OnUnloaded(object sender, RoutedEventArgs e)
     {
-        WindowManager.StudentsManagerWindow("Close");
+        try
+        {
+            WindowManager.StudentsManagerWindow("Close");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 }
