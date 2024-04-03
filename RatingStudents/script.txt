@@ -1,0 +1,103 @@
+CREATE DATABASE StudentRating;
+
+USE StudentRating;
+
+CREATE TABLE Students (
+    student_id INT IDENTITY(1,1) PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    second_name VARCHAR(50) NOT NULL,
+    patronymic VARCHAR(50),
+    address VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Subjects (
+    subject_id INT IDENTITY(1,1) PRIMARY KEY,
+    course_name VARCHAR(50) NOT NULL,
+    description VARCHAR(50) NOT NULL,
+    duration VARCHAR(50) NOT NULL,
+    instructor VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Ratings (
+    rating_id INT IDENTITY(1,1) PRIMARY KEY,
+    student_id INT NOT NULL,
+    grade DECIMAL(4, 2) NOT NULL,
+    subject_id INT NOT NULL,
+    CONSTRAINT FK_Student FOREIGN KEY (student_id) REFERENCES Students(student_id),
+    CONSTRAINT FK_Subject FOREIGN KEY (subject_id) REFERENCES Subjects(subject_id)
+);
+
+INSERT INTO Students (first_name, second_name, patronymic, address)
+VALUES ('John', 'Doe', 'Smith', '123 Main St'),
+       ('Jane', 'Smith', 'Doe', '456 Elm St'),
+       ('Alice', 'Johnson', 'Marie', '789 Oak St'),
+       ('Bob', 'Williams', NULL, '101 Pine St'),
+       ('Emily', 'Brown', 'Grace', '202 Maple St'),
+       ('Michael', 'Jones', NULL, '303 Cedar St'),
+       ('Sarah', 'Davis', 'Elizabeth', '404 Walnut St'),
+       ('David', 'Miller', NULL, '505 Birch St'),
+       ('Emma', 'Wilson', 'Rose', '606 Spruce St'),
+       ('James', 'Taylor', 'Lee', '707 Pine St');
+
+INSERT INTO Subjects (course_name, description, duration, instructor)
+VALUES ('Mathematics', 'Introduction to Algebra', '3 months', 'Prof. Smith'),
+       ('Physics', 'Mechanics Fundamentals', '4 months', 'Prof. Johnson'),
+       ('Chemistry', 'Basic Chemistry Principles', '3.5 months', 'Prof. Williams'),
+       ('Biology', 'Cell Biology', '3 months', 'Prof. Brown'),
+       ('English', 'Grammar and Composition', '2 months', 'Prof. Jones'),
+       ('History', 'World History', '4 months', 'Prof. Davis'),
+       ('Computer Science', 'Introduction to Programming', '3 months', 'Prof. Miller'),
+       ('Art', 'Art Appreciation', '2.5 months', 'Prof. Wilson'),
+       ('Economics', 'Microeconomics', '3.5 months', 'Prof. Taylor'),
+       ('Geography', 'Physical Geography', '3 months', 'Prof. Adams');
+
+INSERT INTO Ratings (student_id, grade, subject_id)
+VALUES (1, 5, 1),
+       (2, 5, 2),
+       (3, 4, 3),
+       (4, 4, 4),
+       (5, 5, 5),
+       (6, 5, 6),
+       (7, 4, 7),
+       (8, 5, 8),
+       (9, 5, 9),
+       (10, 4, 10);
+
+SELECT * FROM Students;
+
+SELECT * FROM Subjects;
+
+SELECT * FROM Ratings;
+
+UPDATE Students
+SET 
+    first_name = 'Alice',
+    second_name = 'Johnson',
+    patronymic = 'Marie',
+    address = '123 Updated Street'
+WHERE student_id = 1;
+
+UPDATE Subjects
+SET 
+    course_name = 'Advanced Mathematics',
+    description = 'Calculus and Linear Algebra',
+    duration = '6 months',
+    instructor = 'Prof. Thompson'
+WHERE subject_id = 1;
+
+UPDATE Ratings
+SET 
+    student_id = 3,
+    grade = 3,
+    subject_id = 3
+WHERE rating_id = 1;
+
+DELETE FROM Students
+WHERE student_id = 1;
+
+DELETE FROM Subjects
+WHERE subject_id = 1;
+
+DELETE FROM Ratings
+WHERE rating_id = 1;
+
