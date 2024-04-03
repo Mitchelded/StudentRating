@@ -1,6 +1,6 @@
 using System.Data;
+using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using Microsoft.Data.SqlClient;
 
 namespace RatingStudents;
@@ -26,6 +26,7 @@ public partial class Window_Students : Window
     public Window_Students()
     {
         InitializeComponent();
+        
         try
         {
             _conn = new ConnectionDb();
@@ -50,7 +51,7 @@ public partial class Window_Students : Window
             {
                 Window_Subjects windowSubjects = new Window_Subjects();
                 WindowManager.windowSubjects = windowSubjects;
-                WindowManager.windowSubjects.Show();
+                windowSubjects.Show();
             }
 
             WindowManager.SubjectsManagerWindow("Open");
@@ -221,7 +222,7 @@ public partial class Window_Students : Window
             {
                 Window_Ratings windowRatings = new Window_Ratings();
                 WindowManager.windowRatings = windowRatings;
-                WindowManager.windowRatings.Show();
+                windowRatings.Show();
             }
 
             WindowManager.RatingsManagerWindow("Open");
@@ -249,6 +250,16 @@ public partial class Window_Students : Window
         try
         {
             WindowManager.StudentsManagerWindow("Close");
+            if (!WindowManager.windowStudents.IsVisible && !WindowManager.windowSubjects.IsVisible &&
+                !WindowManager.windowRatings.IsVisible)
+            {
+                WindowManager.windowStudents.Close();
+                WindowManager.windowStudents = null;
+                WindowManager.windowSubjects.Close();
+                WindowManager.windowSubjects = null;
+                WindowManager.windowRatings.Close();
+                WindowManager.windowRatings = null;
+            }
         }
         catch (Exception ex)
         {

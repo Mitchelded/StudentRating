@@ -26,6 +26,8 @@ public partial class MainWindow : Window
             {
                 ConnectionDb.DataSource = TbDataSource.Text;
                 WindowManager.windowStudents = new Window_Students();
+                WindowManager.windowSubjects = new Window_Subjects();
+                WindowManager.windowRatings = new Window_Ratings();
                 WindowManager.windowStudents.Show();
                 this.Close();
             }

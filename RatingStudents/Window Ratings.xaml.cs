@@ -1,6 +1,7 @@
 using System.Windows;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -34,18 +35,13 @@ public partial class Window_Ratings : Window
     public Window_Ratings()
     {
         InitializeComponent();
-        try
-        {
+        
             _conn = new ConnectionDb();
             DataTable dataTable = _conn.GetDataTable(SelectQuery);
             Dg.ItemsSource = dataTable.DefaultView;
             CbSubject.ItemsSource = _conn.FillComboBoxSubjects(SelectComboBoxQuerySubjects);
             CbStudent.ItemsSource = _conn.FillComboBoxStudents(SelectComboBoxQueryStudents);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        
     }
 
     private void MiSelect_OnClick(object sender, RoutedEventArgs e)
@@ -294,7 +290,7 @@ public partial class Window_Ratings : Window
             {
                 Window_Subjects windowSubjects = new Window_Subjects();
                 WindowManager.windowSubjects = windowSubjects;
-                WindowManager.windowSubjects.Show();
+                windowSubjects.Show();
             }
 
             WindowManager.SubjectsManagerWindow("Open");
@@ -317,7 +313,7 @@ public partial class Window_Ratings : Window
             {
                 Window_Students windowStudents = new Window_Students();
                 WindowManager.windowStudents = windowStudents;
-                WindowManager.windowStudents.Show();
+                windowStudents.Show();
             }
 
             WindowManager.StudentsManagerWindow("Open");

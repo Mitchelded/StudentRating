@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Microsoft.Data.SqlClient;
 
 namespace RatingStudents
@@ -64,7 +54,7 @@ namespace RatingStudents
                 {
                     Window_Students windowStudents = new Window_Students();
                     WindowManager.windowStudents = windowStudents;
-                    WindowManager.windowStudents.Show();
+                    windowStudents.Show();
                 }
 
                 WindowManager.StudentsManagerWindow("Open");
@@ -224,7 +214,7 @@ namespace RatingStudents
                 {
                     Window_Ratings windowRatings = new Window_Ratings();
                     WindowManager.windowRatings = windowRatings;
-                    WindowManager.windowRatings.Show();
+                    windowRatings.Show();
                 }
 
                 WindowManager.RatingsManagerWindow("Open");

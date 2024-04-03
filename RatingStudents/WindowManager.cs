@@ -6,6 +6,7 @@ public static class WindowManager
     public static Window_Ratings windowRatings;
     public static Window_Students windowStudents;
     
+
     public static void StudentsManagerWindow(string openOrClose)
     {
         if (openOrClose.ToLower() == "close")
