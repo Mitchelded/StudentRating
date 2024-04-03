@@ -21,7 +21,6 @@ namespace RatingStudents
     /// </summary>
     public partial class Window_Subjects : Window
     {
-        
         private const string SelectQuery = "SELECT * FROM dbo.Subjects";
 
         private const string InsertQuery = "INSERT INTO dbo.Subjects VALUES (@param1, @param2, @param3, @param4)";
@@ -34,11 +33,18 @@ namespace RatingStudents
         private const string DeleteQueryChild = "DELETE FROM dbo.Ratings WHERE subject_id = @primaryKeyValue";
 
         private const string TruncateQuery = "Delete From dbo.Subjects";
-        private const string TruncateQueryChild  = "Delete From dbo.Ratings";
-        
+        private const string TruncateQueryChild = "Delete From dbo.Ratings";
+
         private readonly ConnectionDb _conn;
+
+        // private readonly Window_Ratings _windowRatings;
+        // private readonly Window_Students _windowStudents;
+        // private readonly Window_Subjects _windowSubjects;
         public Window_Subjects()
         {
+            // this._windowRatings = windowRatings;
+            // this._windowStudents = windowStudents;
+            // this._windowSubjects = windowSubjects;
             InitializeComponent();
             _conn = new ConnectionDb();
             DataTable dataTable = _conn.GetDataTable(SelectQuery);
@@ -47,19 +53,18 @@ namespace RatingStudents
 
         private void miWindowStudents_Click(object sender, RoutedEventArgs e)
         {
-            // Проверяем, открыто ли уже окно Window_Students
             if (Application.Current.Windows.OfType<Window_Students>().Any())
             {
-                // Окно уже открыто, необходимо активировать его
-                Window_Students window = Application.Current.Windows.OfType<Window_Students>().First();
-                window.Activate();
+                WindowManager.windowStudents.Show();
             }
             else
             {
-                // Окно еще не открыто, создаем новый экземпляр и открываем его
-                Window_Students window = new Window_Students();
-                window.Show();
+                Window_Students windowStudents = new Window_Students();
+                WindowManager.windowStudents = windowStudents;
+                WindowManager.windowStudents.Show();
             }
+            
+            WindowManager.StudentsManagerWindow("Open");
         }
 
         private void MiSelect_OnClick(object sender, RoutedEventArgs e)
@@ -71,7 +76,7 @@ namespace RatingStudents
         private void MiInsert_OnClick(object sender, RoutedEventArgs e)
         {
             object[] parameters =
-               { TbCourseName.Text, TbDescription.Text, TbDuration.Text, TbInstructor.Text};
+                { TbCourseName.Text, TbDescription.Text, TbDuration.Text, TbInstructor.Text };
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@param1", parameters[0]),
@@ -109,7 +114,7 @@ namespace RatingStudents
             DataTable dataTable = _conn.GetDataTable(SelectQuery);
             Dg.ItemsSource = dataTable.DefaultView;
         }
-        
+
         private void Dg_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DataRowView selectedRow = (DataRowView)Dg.SelectedItem;
@@ -122,7 +127,6 @@ namespace RatingStudents
                 TbDuration.Text = selectedRow["duration"].ToString() ?? string.Empty;
 
                 TbInstructor.Text = selectedRow["instructor"].ToString() ?? string.Empty;
-                
             }
         }
 
@@ -161,27 +165,29 @@ namespace RatingStudents
 
         private void MiClear_OnClick(object sender, RoutedEventArgs e)
         {
-            _conn.TruncateTable(TruncateQueryChild);
-            // Выполняем запрос на очистку таблицы
-            _conn.TruncateTable(TruncateQuery);
+            Dg.ItemsSource = null;
         }
 
 
         private void MiWindowRating_OnClick(object sender, RoutedEventArgs e)
         {
-            // Проверяем, открыто ли уже окно Window_Ratings
             if (Application.Current.Windows.OfType<Window_Ratings>().Any())
             {
-                // Окно уже открыто, необходимо активировать его
-                Window_Ratings window = Application.Current.Windows.OfType<Window_Ratings>().First();
-                window.Activate();
+                WindowManager.windowRatings.Show();
             }
             else
             {
-                // Окно еще не открыто, создаем новый экземпляр и открываем его
-                Window_Ratings window = new Window_Ratings();
-                window.Show();
+                Window_Ratings windowRatings = new Window_Ratings();
+                WindowManager.windowRatings = windowRatings;
+                WindowManager.windowRatings.Show();
             }
+            
+            WindowManager.RatingsManagerWindow("Open");
+        }
+
+        private void Window_Subjects_OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            WindowManager.SubjectsManagerWindow("Close");
         }
     }
 }

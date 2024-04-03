@@ -8,10 +8,11 @@ namespace RatingStudents;
 
 public partial class Window_Ratings : Window
 {
-    private const string SelectQuery = "SELECT dbo.Ratings.*, Students.first_name + ' ' + Students.second_name + ' ' + " +
-                                       "Students.patronymic AS full_name, Subjects.course_name FROM dbo.Ratings " +
-                                       "INNER JOIN Students ON dbo.Ratings.student_id = Students.student_id " +
-                                       "INNER JOIN Subjects ON dbo.Ratings.subject_id = Subjects.subject_id;";
+    private const string SelectQuery =
+        "SELECT dbo.Ratings.*, Students.first_name + ' ' + Students.second_name + ' ' + " +
+        "Students.patronymic AS full_name, Subjects.course_name FROM dbo.Ratings " +
+        "INNER JOIN Students ON dbo.Ratings.student_id = Students.student_id " +
+        "INNER JOIN Subjects ON dbo.Ratings.subject_id = Subjects.subject_id;";
 
     private const string InsertQuery = "INSERT INTO dbo.Ratings VALUES (@param1, @param2, @param3)";
 
@@ -22,15 +23,23 @@ public partial class Window_Ratings : Window
     private const string DeleteQuery = "DELETE FROM dbo.Ratings WHERE rating_id = @primaryKeyValue";
 
     private const string TruncateQuery = $"DELETE FROM dbo.Ratings";
-    
+
     private const string SelectComboBoxQuerySubjects = "SELECT subject_id, course_name FROM dbo.Subjects";
-    private const string SelectComboBoxQueryStudents = "SELECT student_id, first_name, second_name, patronymic FROM dbo.Students;";
+
+    private const string SelectComboBoxQueryStudents =
+        "SELECT student_id, first_name, second_name, patronymic FROM dbo.Students;";
 
     private readonly ConnectionDb _conn;
-    
+    // private readonly Window_Students _windowStudents;
+    // private readonly Window_Subjects _windowSubjects;
+    // private readonly Window_Ratings _windowRatings;
+
     public Window_Ratings()
     {
         InitializeComponent();
+        // this._windowStudents = windowStudents;
+        // this._windowSubjects = windowSubjects;
+        // this._windowRatings = windowRatings;
         _conn = new ConnectionDb();
         DataTable dataTable = _conn.GetDataTable(SelectQuery);
         Dg.ItemsSource = dataTable.DefaultView;
@@ -42,7 +51,6 @@ public partial class Window_Ratings : Window
     {
         DataTable dataTable = _conn.GetDataTable(SelectQuery);
         Dg.ItemsSource = dataTable.DefaultView;
-        
     }
 
 
@@ -58,14 +66,13 @@ public partial class Window_Ratings : Window
         };
 
         _conn.InsertData(InsertQuery, sqlParameters);
-        
     }
 
     private void MiUpdate_OnClick(object sender, RoutedEventArgs e)
     {
         DataRowView selectedRow = (DataRowView)Dg.SelectedItem;
         int value1 = int.Parse(TbStudent.Text); // Первая колонка в строке
-        decimal value2 =  decimal.Parse(TbGrade.Text); // Вторая колонка в строке
+        decimal value2 = decimal.Parse(TbGrade.Text); // Вторая колонка в строке
         int value3 = int.Parse(TbSubject.Text); // Первая колонка в строке
         int primaryKeyValue = int.Parse(selectedRow["rating_id"].ToString() ?? string.Empty);
 
@@ -85,7 +92,6 @@ public partial class Window_Ratings : Window
         // Обновляем данные в DataGrid
         DataTable dataTable = _conn.GetDataTable(SelectQuery);
         Dg.ItemsSource = dataTable.DefaultView;
-        
     }
 
     private void Dg_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -104,7 +110,7 @@ public partial class Window_Ratings : Window
     private void CbSubject_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         string? selectedCourse = CbSubject.SelectedItem.ToString();
-        
+
         int subjectId = _conn.GetSubjectsId(selectedCourse.Split(" ")[0], "Subjects");
         TbSubject.Text = subjectId.ToString();
     }
@@ -164,7 +170,6 @@ public partial class Window_Ratings : Window
             // Обновляем данные в DataGrid
             DataTable dataTable = _conn.GetDataTable(SelectQuery);
             Dg.ItemsSource = dataTable.DefaultView;
-            
         }
         else
         {
@@ -175,8 +180,7 @@ public partial class Window_Ratings : Window
     private void MiClear_OnClick(object sender, RoutedEventArgs e)
     {
         // Выполняем запрос на очистку таблицы
-        _conn.TruncateTable(TruncateQuery);
-        
+        Dg.ItemsSource = null;
     }
 
     private void CbSubject_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -195,35 +199,37 @@ public partial class Window_Ratings : Window
 
     private void MiWindowSubject_OnClick(object sender, RoutedEventArgs e)
     {
-        // Проверяем, открыто ли уже окно Window_Subjects
         if (Application.Current.Windows.OfType<Window_Subjects>().Any())
         {
-            // Окно уже открыто, необходимо активировать его
-            Window_Subjects window = Application.Current.Windows.OfType<Window_Subjects>().First();
-            window.Activate();
+            WindowManager.windowSubjects.Show();
         }
         else
         {
-            // Окно еще не открыто, создаем новый экземпляр и открываем его
-            Window_Subjects window = new Window_Subjects();
-            window.Show();
+            Window_Subjects windowSubjects = new Window_Subjects();
+            WindowManager.windowSubjects = windowSubjects;
+            WindowManager.windowSubjects.Show();
         }
+        WindowManager.SubjectsManagerWindow("Open");
     }
 
     private void MiWindowStudents_OnClick(object sender, RoutedEventArgs e)
     {
-        // Проверяем, открыто ли уже окно Window_Students
         if (Application.Current.Windows.OfType<Window_Students>().Any())
         {
-            // Окно уже открыто, необходимо активировать его
-            Window_Students window = Application.Current.Windows.OfType<Window_Students>().First();
-            window.Activate();
+            WindowManager.windowStudents.Show();
         }
         else
         {
-            // Окно еще не открыто, создаем новый экземпляр и открываем его
-            Window_Students window = new Window_Students();
-            window.Show();
+            Window_Students windowStudents = new Window_Students();
+            WindowManager.windowStudents = windowStudents;
+            WindowManager.windowStudents.Show();
         }
+        
+        WindowManager.StudentsManagerWindow("Open");
+    }
+
+    private void Window_Ratings_OnUnloaded(object sender, RoutedEventArgs e)
+    {
+        WindowManager.RatingsManagerWindow("Close");
     }
 }

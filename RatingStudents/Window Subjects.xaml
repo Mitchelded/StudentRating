@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RatingStudents"
         mc:Ignorable="d"
-        Title="Window_Subjects" Height="450" Width="800">
+        Title="Window_Subjects" Height="450" Width="800"
+        Unloaded="Window_Subjects_OnUnloaded">
     <Grid>
         <Menu>
             <MenuItem Header="Base">
@@ -16,8 +17,8 @@
                 <MenuItem Header="Clear" Name="MiClear" Click="MiClear_OnClick"/>
             </MenuItem>
             <MenuItem Header="Window">
-                <MenuItem Header="Window Students" x:Name="miWindowStudents" Click="miWindowStudents_Click"/>
-                <MenuItem Header="Window Ratings" x:Name="MiWindowRating" Click="MiWindowRating_OnClick"/>
+                <MenuItem Header="Window Students" x:Name="MiWindowStudents" Click="miWindowStudents_Click"/>
+                <MenuItem Header="Window Ratings" x:Name="MiWindowRatings" Click="MiWindowRating_OnClick"/>
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="Tools"/>

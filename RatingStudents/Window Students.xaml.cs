@@ -7,7 +7,6 @@ namespace RatingStudents;
 
 public partial class Window_Students : Window
 {
-
     private const string SelectQuery = "SELECT Students.* FROM dbo.Students";
 
     private const string InsertQuery = "INSERT INTO dbo.Students VALUES (@param1, @param2, @param3, @param4)";
@@ -24,30 +23,35 @@ public partial class Window_Students : Window
 
     private readonly ConnectionDb _conn;
 
+    // private readonly Window_Ratings _windowRatings;
+    // private readonly Window_Subjects _windowSubjects;
+    // private readonly Window_Students _windowStudents;
     public Window_Students()
     {
         InitializeComponent();
+        // this._windowRatings = windowRatings;
+        // this._windowSubjects = windowSubjects;
+        // this._windowStudents = windowStudents;
         _conn = new ConnectionDb();
         DataTable dataTable = _conn.GetDataTable(SelectQuery);
         Dg.ItemsSource = dataTable.DefaultView;
-        
     }
 
     private void miWindowSubject_Click(object sender, RoutedEventArgs e)
     {
-        // Проверяем, открыто ли уже окно Window_Subjects
+        
+        
         if (Application.Current.Windows.OfType<Window_Subjects>().Any())
         {
-            // Окно уже открыто, необходимо активировать его
-            Window_Subjects window = Application.Current.Windows.OfType<Window_Subjects>().First();
-            window.Activate();
+            WindowManager.windowSubjects.Show();
         }
         else
         {
-            // Окно еще не открыто, создаем новый экземпляр и открываем его
-            Window_Subjects window = new Window_Subjects();
-            window.Show();
+            Window_Subjects windowSubjects = new Window_Subjects();
+            WindowManager.windowSubjects = windowSubjects;
+            WindowManager.windowSubjects.Show();
         }
+        WindowManager.SubjectsManagerWindow("Open");
     }
 
     private void MiSelect_OnClick(object sender, RoutedEventArgs e)
@@ -59,7 +63,7 @@ public partial class Window_Students : Window
     private void MiInsert_OnClick(object sender, RoutedEventArgs e)
     {
         object[] parameters =
-            { TbFirstName.Text, TbSecondName.Text, TbPatronymic.Text, TbAddress.Text};
+            { TbFirstName.Text, TbSecondName.Text, TbPatronymic.Text, TbAddress.Text };
         SqlParameter[] sqlParameters = new SqlParameter[]
         {
             new SqlParameter("@param1", parameters[0]),
@@ -92,7 +96,6 @@ public partial class Window_Students : Window
         };
 
 
-
         // Выполняем запрос на обновление
         _conn.UpdateData(UpdateQuery, parameters);
 
@@ -114,7 +117,6 @@ public partial class Window_Students : Window
             TbPatronymic.Text = selectedRow["patronymic"].ToString() ?? string.Empty;
 
             TbAddress.Text = selectedRow["adress"].ToString() ?? string.Empty;
-
         }
     }
 
@@ -154,37 +156,40 @@ public partial class Window_Students : Window
     private void MiClear_OnClick(object sender, RoutedEventArgs e)
     {
         // Выполняем запрос на очистку таблицы
-        _conn.TruncateTable(TruncateQuery);
+        Dg.ItemsSource = null;
     }
-
 
 
     private void MiWindowRatings_Click(object sender, RoutedEventArgs e)
     {
-        // Проверяем, открыто ли уже окно Window_Ratings
         if (Application.Current.Windows.OfType<Window_Ratings>().Any())
         {
-            // Окно уже открыто, необходимо активировать его
-            Window_Ratings window = Application.Current.Windows.OfType<Window_Ratings>().First();
-            window.Activate();
+            WindowManager.windowRatings.Show();
         }
         else
         {
-            // Окно еще не открыто, создаем новый экземпляр и открываем его
-            Window_Ratings window = new Window_Ratings();
-            window.Show();
+            Window_Ratings windowRatings = new Window_Ratings();
+            WindowManager.windowRatings = windowRatings;
+            WindowManager.windowRatings.Show();
         }
+
+        WindowManager.RatingsManagerWindow("Open");
     }
 
     private void MiTools_Click(object sender, RoutedEventArgs e)
     {
         MessageBox.Show("1. C# Programming Language\n" +
-            "2. Wpf Libriary", "Tools", MessageBoxButton.OK, MessageBoxImage.Information);
+                        "2. Wpf Libriary", "Tools", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private void MiAbout_Click(object sender, RoutedEventArgs e)
     {
         MessageBox.Show("Student Rating\n" +
-            "Tretyakov Anton Olegovich", "About", MessageBoxButton.OK, MessageBoxImage.Information);
+                        "Tretyakov Anton Olegovich", "About", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+
+    private void Window_Students_OnUnloaded(object sender, RoutedEventArgs e)
+    {
+        WindowManager.StudentsManagerWindow("Close");
     }
 }

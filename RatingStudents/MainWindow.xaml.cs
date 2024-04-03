@@ -10,6 +10,9 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+    WindowManager.windowSubjects = new Window_Subjects();
+    WindowManager.windowRatings = new Window_Ratings();
+    WindowManager.windowStudents = new Window_Students();
     }
 
     private void BtnRun_OnClick(object sender, RoutedEventArgs e)
@@ -30,8 +33,7 @@ public partial class MainWindow : Window
         else
         {
             ConnectionDb.DataSource = TbDataSource.Text;
-            Window_Students windowStudents = new Window_Students();
-            windowStudents.Show();
+            WindowManager.windowStudents.Show();
             this.Close();
         }
     }
