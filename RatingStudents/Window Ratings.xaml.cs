@@ -1,9 +1,9 @@
 using System.Windows;
-using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Data.SqlClient;
 
 namespace RatingStudents;
 
@@ -79,6 +79,7 @@ public partial class Window_Ratings : Window
                 new SqlParameter("@param2", parameters[1]),
                 new SqlParameter("@param3", parameters[2])
             };
+
 
             _conn.InsertData(InsertQuery, sqlParameters);
             Refresh();

@@ -1,6 +1,7 @@
-using Microsoft.Data.SqlClient;
 using System.Data;
-using System.Windows.Forms;
+using System.Windows;
+using System.Data.SqlClient;
+using System.Data.SqlTypes;
 
 namespace RatingStudents;
 
@@ -16,7 +17,6 @@ public class ConnectionDb
     public DataTable GetDataTable(string queryString)
     {
         DataTable dataTable = new DataTable();
-
         using SqlConnection connection = new SqlConnection(ConnectionString);
         SqlCommand command = new SqlCommand(queryString, connection);
         SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -27,7 +27,7 @@ public class ConnectionDb
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(ex.ToString(), "Error");
         }
 
         return dataTable;
@@ -47,7 +47,7 @@ public class ConnectionDb
         catch (Exception ex)
         {
             // Обработка исключения
-            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(ex.Message,"Error");
         }
     }
     
@@ -66,7 +66,7 @@ public class ConnectionDb
         catch (Exception ex)
         {
             // Обработка исключения
-            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(ex.Message,"Error");
         }
     }
     
@@ -85,7 +85,7 @@ public class ConnectionDb
         catch (Exception ex)
         {
             // Обработка исключения
-            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(ex.Message,"Error");
         }
     }
     
@@ -102,7 +102,7 @@ public class ConnectionDb
         catch (Exception ex)
         {
             // Обработка исключения
-            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(ex.Message,"Error");
         }
     }
     
@@ -129,7 +129,7 @@ public class ConnectionDb
         catch (Exception ex)
         {
             // Обработка исключения
-            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(ex.Message,"Error");
             // Можно выбросить исключение или сделать что-то другое в зависимости от требований
         }
 
@@ -157,7 +157,7 @@ public class ConnectionDb
         catch (Exception ex)
         {
             // Обработка исключения
-            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(ex.Message,"Error");
             // Можно выбросить исключение или сделать что-то другое в зависимости от требований
         }
 
@@ -180,7 +180,7 @@ public class ConnectionDb
         catch (Exception ex)
         {
             // Обработка исключения
-            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(ex.Message,"Error");
             return null;
         }
     }
@@ -262,7 +262,7 @@ public class ConnectionDb
         catch (Exception ex)
         {
             // Обработка исключения
-            MessageBox.Show(ex.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(ex.Message,"Error");
         }
 
         return null; // Возвращаем null, если что-то пошло не так или запись не найдена

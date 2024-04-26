@@ -1,7 +1,7 @@
 using System.Data;
 using System.Linq;
 using System.Windows;
-using Microsoft.Data.SqlClient;
+using System.Data.SqlClient;
 
 namespace RatingStudents;
 
