@@ -10,7 +10,7 @@ public class ConnectionDb
     
 
 
-    private static readonly string ConnectionString =
+    private static string ConnectionString =>
         $"Data Source={DataSource};Database=StudentRating;Integrated Security=True;TrustServerCertificate=True";
 
     public DataTable GetDataTable(string queryString)

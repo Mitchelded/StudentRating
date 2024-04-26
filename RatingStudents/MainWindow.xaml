@@ -8,21 +8,11 @@
         Title="Window Connection" Height="150" Width="300">
     <Grid>
         <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center">
-            <!-- <StackPanel Orientation="Horizontal" > -->
-            <!--     <PasswordBox Width="150" Height="24" x:Name="PbPassword"/> -->
-            <!--     <Label Width="60" Height="24" Content="Password" HorizontalAlignment="Right"/> -->
-            <!-- </StackPanel> -->
-            <!-- <StackPanel Orientation="Horizontal" Margin="0,20,0,0"> -->
-            <!--     <TextBox Width="150" Height="25" x:Name="TbPort"/> -->
-            <!--     <Label Width="35" Height="25" Content="Port" HorizontalAlignment="Right"/> -->
-            <!-- </StackPanel>  -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                 <TextBox Width="150" Height="25" x:Name="TbDataSource"/>
                 <Label Height="25" Content="Data Source" HorizontalAlignment="Right"/>
             </StackPanel>
             <Button Width="150" Height="24" Margin="0,20,0,0" Content="Run" x:Name="BtnRun" Click="BtnRun_OnClick"/>
         </StackPanel>
-
-        
     </Grid>
 </Window>

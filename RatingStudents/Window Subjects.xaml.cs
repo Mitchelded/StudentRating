@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Data.SqlClient;
@@ -25,21 +26,18 @@ namespace RatingStudents
         private const string TruncateQuery = "Delete From dbo.Subjects";
         private const string TruncateQueryChild = "Delete From dbo.Ratings";
 
-        private readonly ConnectionDb _conn;
+        private ConnectionDb _conn = new ConnectionDb();
 
         public Window_Subjects()
         {
             InitializeComponent();
-            try
-            {
-                _conn = new ConnectionDb();
-                DataTable dataTable = _conn.GetDataTable(SelectQuery);
-                Dg.ItemsSource = dataTable.DefaultView;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+        }
+
+        void Refresh()
+        {
+            
+            DataTable dataTable = _conn.GetDataTable(SelectQuery);
+            Dg.ItemsSource = dataTable.DefaultView;
         }
 
         private void miWindowStudents_Click(object sender, RoutedEventArgs e)
@@ -92,6 +90,7 @@ namespace RatingStudents
                     new SqlParameter("@param4", parameters[3])
                 };
                 _conn.InsertData(InsertQuery, sqlParameters);
+                Refresh();
             }
             catch (Exception ex)
             {
@@ -127,6 +126,7 @@ namespace RatingStudents
                 // Обновляем данные в DataGrid
                 DataTable dataTable = _conn.GetDataTable(SelectQuery);
                 Dg.ItemsSource = dataTable.DefaultView;
+                Refresh();
             }
             catch (Exception ex)
             {
@@ -184,6 +184,7 @@ namespace RatingStudents
                     // Обновляем данные в DataGrid
                     DataTable dataTable = _conn.GetDataTable(SelectQuery);
                     Dg.ItemsSource = dataTable.DefaultView;
+                    Refresh();
                 }
                 else
                 {
@@ -198,7 +199,18 @@ namespace RatingStudents
 
         private void MiClear_OnClick(object sender, RoutedEventArgs e)
         {
-            Dg.ItemsSource = null;
+            try
+            {
+                TbCourseName.Text = string.Empty;
+                TbDescription.Text = string.Empty;
+                TbDuration.Text = string.Empty;
+                TbInstructor.Text = string.Empty;
+                Dg.ItemsSource = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
 

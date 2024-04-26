@@ -12,7 +12,7 @@ public partial class Window_Students : Window
     private const string InsertQuery = "INSERT INTO dbo.Students VALUES (@param1, @param2, @param3, @param4)";
 
     private const string UpdateQuery = "UPDATE dbo.Students SET first_name = @param1, second_name = @param2, " +
-                                       "patronymic = @param3, adress = @param4 " +
+                                       "patronymic = @param3, address = @param4 " +
                                        "WHERE student_id = @primaryKeyValue";
 
     private const string DeleteQuery = "DELETE FROM dbo.Students WHERE student_id = @primaryKeyValue";
@@ -21,22 +21,18 @@ public partial class Window_Students : Window
     private const string TruncateQuery = $"DELETE FROM  dbo.Students";
 
 
-    private readonly ConnectionDb _conn;
+    private ConnectionDb _conn = new ConnectionDb();
 
     public Window_Students()
     {
         InitializeComponent();
+    }
+
+    void Refresh()
+    {
         
-        try
-        {
-            _conn = new ConnectionDb();
-            DataTable dataTable = _conn.GetDataTable(SelectQuery);
-            Dg.ItemsSource = dataTable.DefaultView;
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        DataTable dataTable = _conn.GetDataTable(SelectQuery);
+        Dg.ItemsSource = dataTable.DefaultView;
     }
 
     private void miWindowSubject_Click(object sender, RoutedEventArgs e)
@@ -90,6 +86,7 @@ public partial class Window_Students : Window
             };
 
             _conn.InsertData(InsertQuery, sqlParameters);
+            Refresh();
         }
         catch (Exception ex)
         {
@@ -126,6 +123,7 @@ public partial class Window_Students : Window
             // Обновляем данные в DataGrid
             DataTable dataTable = _conn.GetDataTable(SelectQuery);
             Dg.ItemsSource = dataTable.DefaultView;
+            Refresh();
         }
         catch (Exception ex)
         {
@@ -147,7 +145,7 @@ public partial class Window_Students : Window
 
                 TbPatronymic.Text = selectedRow["patronymic"].ToString() ?? string.Empty;
 
-                TbAddress.Text = selectedRow["adress"].ToString() ?? string.Empty;
+                TbAddress.Text = selectedRow["address"].ToString() ?? string.Empty;
             }
         }
         catch (Exception ex)
@@ -184,6 +182,7 @@ public partial class Window_Students : Window
                 // Обновляем данные в DataGrid
                 DataTable dataTable = _conn.GetDataTable(SelectQuery);
                 Dg.ItemsSource = dataTable.DefaultView;
+                Refresh();
             }
             else
             {
@@ -200,7 +199,10 @@ public partial class Window_Students : Window
     {
         try
         {
-            // Выполняем запрос на очистку таблицы
+            TbAddress.Text = string.Empty;
+            TbFirstName.Text = string.Empty;
+            TbPatronymic.Text = string.Empty;
+            TbSecondName.Text = string.Empty;
             Dg.ItemsSource = null;
         }
         catch (Exception ex)

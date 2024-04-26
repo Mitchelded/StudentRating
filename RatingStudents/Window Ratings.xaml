@@ -16,29 +16,25 @@
                 <MenuItem Header="Delete" Name="MiDelete" Click="MiDelete_OnClick"/>
                 <MenuItem Header="Clear" Name="MiClear" Click="MiClear_OnClick"/>
             </MenuItem>
-                <MenuItem Header="Window">
-                    <MenuItem Header="Window Subjects" x:Name="MiWindowSubjects" Click="MiWindowSubject_OnClick"/>
-                    <MenuItem Header="Window Ratings" x:Name="MiWindowStudents" Click="MiWindowStudents_OnClick"/>
+            <MenuItem Header="Window">
+                <MenuItem Header="Window Subjects" x:Name="MiWindowSubjects" Click="MiWindowSubject_OnClick"/>
+                <MenuItem Header="Window Students" x:Name="MiWindowStudents" Click="MiWindowStudents_OnClick" IsEnabled="False"/>
             </MenuItem>
-                <MenuItem Header="Help">
-                    <MenuItem Header="Tools"/>
-                    <MenuItem Header="About"/>
+            <MenuItem Header="Help">
+                <MenuItem Header="Tools"/>
+                <MenuItem Header="About"/>
             </MenuItem>
         </Menu>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="50,0,0,0">
             <StackPanel>
-                <TextBox Width="200" Margin="0,50,0,10" x:Name="TbStudent" TextChanged="TbStudent_OnTextChanged"/>
-                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbSubject" TextChanged="TbSubject_OnTextChanged"/>
+                <TextBox Width="200" Margin="0,50,0,10" x:Name="TbStudent"/>
+                <TextBox Width="200" Margin="0,0,0,10" x:Name="TbSubject"/>
                 <TextBox Width="200" Margin="0,0,0,10" x:Name="TbGrade" />
-                <ComboBox Name="CbSubject" Margin="0,0,0,10" SelectionChanged="CbSubject_OnSelectionChanged"  MouseLeftButtonDown="CbSubject_OnMouseLeftButtonDown" PreviewMouseDown="CbSubject_OnPreviewMouseDown"/>
-                <ComboBox Name="CbStudent" Margin="0,0,0,10" SelectionChanged="CbStudent_OnSelectionChanged" MouseLeftButtonDown="CbSubject_OnMouseLeftButtonDown" PreviewMouseDown="CbSubject_OnPreviewMouseDown"/>
             </StackPanel>
             <StackPanel>
                 <Label Content="Student Id" Margin="10,40,0,0"/>
                 <Label Content="Subject Id" Margin="10,5,5,0"/>
                 <Label Content="Grade" Margin="10,5,5,0"/>
-                <Label Content="Subject" Margin="10,5,5,0"/>
-                <Label Content="Student" Margin="10,5,5,0"/>
             </StackPanel>
             <DataGrid Height="350" Width="430" Margin="10,-50,0,0" Name="Dg" SelectionChanged="Dg_OnSelectionChanged"/>
         </StackPanel>

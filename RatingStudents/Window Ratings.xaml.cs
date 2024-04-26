@@ -18,7 +18,7 @@ public partial class Window_Ratings : Window
     private const string InsertQuery = "INSERT INTO dbo.Ratings VALUES (@param1, @param2, @param3)";
 
     private const string UpdateQuery = "UPDATE dbo.Ratings SET student_id = @param1, grade = @param2, " +
-                                       "student_id = @param3 " +
+                                       "subject_id = @param3 " +
                                        "WHERE rating_id = @primaryKeyValue";
 
     private const string DeleteQuery = "DELETE FROM dbo.Ratings WHERE rating_id = @primaryKeyValue";
@@ -30,19 +30,23 @@ public partial class Window_Ratings : Window
     private const string SelectComboBoxQueryStudents =
         "SELECT student_id, first_name, second_name, patronymic FROM dbo.Students;";
 
-    private readonly ConnectionDb _conn;
+    private ConnectionDb _conn = new ConnectionDb();
 
     public Window_Ratings()
     {
         InitializeComponent();
         
-            _conn = new ConnectionDb();
-            DataTable dataTable = _conn.GetDataTable(SelectQuery);
-            Dg.ItemsSource = dataTable.DefaultView;
-            CbSubject.ItemsSource = _conn.FillComboBoxSubjects(SelectComboBoxQuerySubjects);
-            CbStudent.ItemsSource = _conn.FillComboBoxStudents(SelectComboBoxQueryStudents);
+    
         
     }
+
+    void Refresh()
+    {
+        
+        DataTable dataTable = _conn.GetDataTable(SelectQuery);
+        Dg.ItemsSource = dataTable.DefaultView;
+    }
+
 
     private void MiSelect_OnClick(object sender, RoutedEventArgs e)
     {
@@ -63,7 +67,7 @@ public partial class Window_Ratings : Window
         try
         {
             object[] parameters =
-                [int.Parse(TbStudent.Text), decimal.Parse(TbGrade.Text), int.Parse(TbSubject.Text)];
+                { int.Parse(TbStudent.Text), decimal.Parse(TbGrade.Text), int.Parse(TbSubject.Text) };
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@param1", parameters[0]),
@@ -72,6 +76,7 @@ public partial class Window_Ratings : Window
             };
 
             _conn.InsertData(InsertQuery, sqlParameters);
+            Refresh();
         }
         catch (Exception ex)
         {
@@ -105,6 +110,7 @@ public partial class Window_Ratings : Window
             // Обновляем данные в DataGrid
             DataTable dataTable = _conn.GetDataTable(SelectQuery);
             Dg.ItemsSource = dataTable.DefaultView;
+            Refresh();
         }
         catch (Exception ex)
         {
@@ -132,77 +138,6 @@ public partial class Window_Ratings : Window
         }
     }
 
-    private void CbSubject_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        try
-        {
-            string? selectedCourse = CbSubject.SelectedItem.ToString();
-
-            int subjectId = _conn.GetSubjectsId(selectedCourse.Split(" ")[0], "Subjects");
-            TbSubject.Text = subjectId.ToString();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-
-    private void CbStudent_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        try
-        {
-            string selectedStudent = CbStudent.SelectedItem.ToString() ?? string.Empty;
-            int studentId = _conn.GetStudentId(selectedStudent);
-            TbStudent.Text = studentId.ToString();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-
-    private void TbStudent_OnTextChanged(object sender, TextChangedEventArgs e)
-    {
-        try
-        {
-            int selectedId = Convert.ToInt32(TbStudent.Text);
-            string? courseName = _conn.GetSubjectsName(selectedId, "Students", "second_name", "student_id");
-            foreach (var item in CbStudent.Items)
-            {
-                // Преобразуем элемент в строку
-                string? itemText = item.ToString();
-
-                // Проверяем, содержит ли текст элемента искомое слово
-                if (courseName != null && itemText != null && itemText.Contains(courseName))
-                {
-                    // Если да, выделяем элемент и выходим из цикла
-                    CbStudent.SelectedItem = item;
-                    break;
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-
-    private void TbSubject_OnTextChanged(object sender, TextChangedEventArgs e)
-    {
-        try
-        {
-            int selectedId = Convert.ToInt32(TbSubject.Text);
-            string? courseName = _conn.GetSubjectsName(selectedId, "Subjects", "course_name", "subject_id");
-            if (!string.IsNullOrEmpty(courseName))
-            {
-                CbSubject.SelectedItem = courseName;
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
 
     private void MiDelete_OnClick(object sender, RoutedEventArgs e)
     {
@@ -225,6 +160,7 @@ public partial class Window_Ratings : Window
                 // Обновляем данные в DataGrid
                 DataTable dataTable = _conn.GetDataTable(SelectQuery);
                 Dg.ItemsSource = dataTable.DefaultView;
+                Refresh();
             }
             else
             {
@@ -241,7 +177,9 @@ public partial class Window_Ratings : Window
     {
         try
         {
-            // Выполняем запрос на очистку таблицы
+            TbStudent.Text = string.Empty;
+            TbSubject.Text = string.Empty;
+            TbGrade.Text = string.Empty;
             Dg.ItemsSource = null;
         }
         catch (Exception ex)
@@ -250,33 +188,6 @@ public partial class Window_Ratings : Window
         }
     }
 
-    private void CbSubject_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        try
-        {
-            CbSubject.Items.Clear();
-            CbStudent.Items.Clear();
-            CbSubject.ItemsSource = _conn.FillComboBoxSubjects(SelectComboBoxQuerySubjects);
-            CbStudent.ItemsSource = _conn.FillComboBoxStudents(SelectComboBoxQueryStudents);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-
-    private void CbSubject_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
-    {
-        try
-        {
-            CbSubject.ItemsSource = _conn.FillComboBoxSubjects(SelectComboBoxQuerySubjects);
-            CbStudent.ItemsSource = _conn.FillComboBoxStudents(SelectComboBoxQueryStudents);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
 
     private void MiWindowSubject_OnClick(object sender, RoutedEventArgs e)
     {
