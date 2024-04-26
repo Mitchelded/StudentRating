@@ -10,10 +10,15 @@ namespace RatingStudents;
 public partial class Window_Ratings : Window
 {
     private const string SelectQuery =
-        "SELECT dbo.Ratings.*, Students.first_name + ' ' + Students.second_name + ' ' + " +
-        "Students.patronymic AS full_name, Subjects.course_name FROM dbo.Ratings " +
+        "SELECT dbo.Ratings.*, " +
+        "Students.first_name + ' ' + " +
+        "ISNULL(Students.second_name, '') + ' ' + " +
+        "ISNULL(Students.patronymic, '') AS full_name, " +
+        "Subjects.course_name " +
+        "FROM dbo.Ratings " +
         "INNER JOIN Students ON dbo.Ratings.student_id = Students.student_id " +
         "INNER JOIN Subjects ON dbo.Ratings.subject_id = Subjects.subject_id;";
+
 
     private const string InsertQuery = "INSERT INTO dbo.Ratings VALUES (@param1, @param2, @param3)";
 
